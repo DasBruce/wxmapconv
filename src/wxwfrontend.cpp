@@ -1,5 +1,8 @@
 #include "wxwfrontend.h"
 
+#include "images/placeholder.png.h"
+#include "uiutils.h"
+
 Frontend::Frontend(const wxString& title)
        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(550, 550))
 {
@@ -147,8 +150,7 @@ Frontend::Frontend(const wxString& title)
     rbxQuality->SetItemToolTip(1, wxT("Requires an nvidia 8 gfx card or better."));
 
 //Preview box////////////////////////////////////////////////////////////////////////////////////////
-    wxBitmap bitmap( 128, 128 );
-    bitmap = wxBitmap(_T("placeholder.bmp"), wxBITMAP_TYPE_BMP);
+	wxBitmap bitmap = charArr2wxBitmap( placeholder_png, sizeof( placeholder_png ) );
     sbmPreview = new wxStaticBitmap(pnlMapConv, wxID_ANY, bitmap, wxPoint(10, 10));
 
     gboxPreview->Add(sbmPreview, 1,  wxRIGHT | wxLEFT | wxBOTTOM | wxTOP, 8);
