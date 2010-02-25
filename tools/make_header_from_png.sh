@@ -5,8 +5,8 @@
 ### converts all found png files into c headers 
 ### and moves them into src/images
 
-cd images/exported
+cd images
 for img in `ls *.png`; do
-	python ../../tools/png2c.py $img
+	python ../tools/png2c.py $img
 done
-mv *.h ../../src/images
+mv *.h ../src/images
