@@ -195,7 +195,7 @@ Frontend::Frontend(const wxString& title)
 
 	wxPanel *pnlSMDGeneral = new wxPanel(nbSMD, -1);
     wxBoxSizer *vboxSMDGeneralMain = new wxBoxSizer(wxVERTICAL);
-	wxStaticBoxSizer *gboxSMDGeneral = new wxStaticBoxSizer(wxVERTICAL, pnlSMDGeneral, _T("General Ma0 Options") );
+	wxStaticBoxSizer *gboxSMDGeneral = new wxStaticBoxSizer(wxVERTICAL, pnlSMDGeneral, _T("General Map Options") );
 	wxStaticBoxSizer *gboxSMDStartPos = new wxStaticBoxSizer(wxVERTICAL, pnlSMDGeneral, _T("Player Start Options") );
 
     vboxSMDGeneralMain->Add(gboxSMDGeneral, 1, wxEXPAND, 0);
