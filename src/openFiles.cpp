@@ -126,17 +126,17 @@ void Frontend::LoadImage(int type)
 
     switch(type){
         case ID_HEIGHT:
-            bmHeightmap = new wxBitmap(*image, -1);
-            if(bmHeightmap->Ok()){
+			bmHeightmap = wxBitmap(*image, -1);
+			if(bmHeightmap.Ok()){
                 bHeightmapLoaded = true;
                 rbxPreview->Enable(ID_HEIGHT, true);
             }
             if(rbxPreview->GetSelection()==ID_HEIGHT)
-                sbmPreviewBig->SetBitmap(*bmHeightmap);
+				sbmPreviewBig->SetBitmap(bmHeightmap);
             break;
         case ID_TEXTURE:
-            bmTexture = new wxBitmap(*image, -1);
-            if(bmTexture->Ok()){
+			bmTexture = wxBitmap(*image, -1);
+			if(bmTexture.Ok()){
                 bTextureLoaded = true;
                 rbxPreview->Enable(ID_TEXTURE, true);
 
@@ -144,34 +144,34 @@ void Frontend::LoadImage(int type)
                 sbmPreview->SetBitmap(wxBitmap(*image, -1));
             }
             if(rbxPreview->GetSelection()==ID_TEXTURE)
-                sbmPreviewBig->SetBitmap(*bmTexture);
+				sbmPreviewBig->SetBitmap(bmTexture);
             break;
         case ID_METAL:
-            bmMetal = new wxBitmap(*image, -1);
-            if(bmMetal->Ok()){
+			bmMetal = wxBitmap(*image, -1);
+			if(bmMetal.Ok()){
                 bMetalLoaded = true;
                 rbxPreview->Enable(ID_HEIGHT, true);
             }
             if(rbxPreview->GetSelection()==ID_METAL)
-                sbmPreviewBig->SetBitmap(*bmMetal);
+				sbmPreviewBig->SetBitmap(bmMetal);
             break;
         case ID_FEATURE:
-            bmFeature = new wxBitmap(*image, -1);
-            if(bmFeature->Ok()){
+			bmFeature = wxBitmap(*image, -1);
+			if(bmFeature.Ok()){
                 bFeatureLoaded = true;
                 rbxPreview->Enable(ID_HEIGHT, true);
             }
             if(rbxPreview->GetSelection()==ID_FEATURE)
-                sbmPreviewBig->SetBitmap(*bmFeature);
+				sbmPreviewBig->SetBitmap(bmFeature);
             break;
         case ID_TYPE:
-            bmTypemap = new wxBitmap(*image, -1);
-            if(bmTypemap->Ok()){
+			bmTypemap = wxBitmap(*image, -1);
+			if(bmTypemap.Ok()){
                 bTypemapLoaded = true;
                 rbxPreview->Enable(ID_HEIGHT, true);
             }
             if(rbxPreview->GetSelection()==ID_TYPE)
-                sbmPreviewBig->SetBitmap(*bmTypemap);
+				sbmPreviewBig->SetBitmap(bmTypemap);
             break;
         default:
             break;

@@ -44,8 +44,9 @@ void Frontend::OpenSMD(void)
             }
             if(str.Contains(wxT("=")))
             {
-                str = str.After(RXwhite);
-                str = str.Before(RXwhite);
+				//!TODO
+//                str = str.After(RXwhite);
+//                str = str.Before(RXwhite);
                 start = 0;
                 length = str.Find(wxT("="));
                 name = str.Mid(start, length);

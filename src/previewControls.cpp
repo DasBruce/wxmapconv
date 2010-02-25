@@ -6,19 +6,19 @@ void Frontend::OnChangePreview(wxCommandEvent& event)
 
     switch(selection){
         case ID_HEIGHT:
-            sbmPreviewBig->SetBitmap(*bmHeightmap);
+			sbmPreviewBig->SetBitmap(bmHeightmap);
             break;
         case ID_TEXTURE:
-            sbmPreviewBig->SetBitmap(*bmTexture);
+			sbmPreviewBig->SetBitmap(bmTexture);
             break;
         case ID_METAL:
-            sbmPreviewBig->SetBitmap(*bmMetal);
+			sbmPreviewBig->SetBitmap(bmMetal);
             break;
         case ID_FEATURE:
-            sbmPreviewBig->SetBitmap(*bmFeature);
+			sbmPreviewBig->SetBitmap(bmFeature);
             break;
         case ID_TYPE:
-            sbmPreviewBig->SetBitmap(*bmTypemap);
+			sbmPreviewBig->SetBitmap(bmTypemap);
             break;
         default:
             break;

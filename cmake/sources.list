@@ -7,7 +7,6 @@ SET(wxmapconvSrc
 	src/wxwfrontendcompile.cpp
 	src/frontend.cpp
 	src/wxwfrontend.h
-	src/wxwfrontendopen.cpp
 	src/uiutils.cpp
 	src/conversion.cpp
 	)

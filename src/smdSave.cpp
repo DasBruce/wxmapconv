@@ -1,7 +1,7 @@
 #include <wx/file.h>
 #include "wxwfrontend.h"
 
-void Frontend::OnClickSMDSave(wxCommandEvent& event)
+void Frontend::OnClickSMDSave(wxCommandEvent& /*event*/)
 {
     wxString sBuffer;
     wxFile file;
