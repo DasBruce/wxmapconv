@@ -1,4 +1,5 @@
 #include "wxwfrontend.h"
+#include "uiutils.h"
 
 void Frontend::OnClickNew(wxCommandEvent& event){
     wxFileDialog* newfiledialog = new wxFileDialog(this, wxT("Save Project"), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
@@ -46,19 +47,7 @@ void Frontend::setDefaultsMapconv(void){
     tcOutput->SetValue(wxT("output.smf"));
     tcOtherOptions->SetValue(wxT(""));
 
-    if(bHeightmapLoaded)
-        delete bmHeightmap;
-    if(bTextureLoaded)
-        delete bmTexture;
-    if(bMetalLoaded)
-        delete bmMetal;
-    if(bFeatureLoaded)
-        delete bmFeature;
-    if(bTypemapLoaded)
-        delete bmTypemap;
-
-
-    sbmPreviewBig->SetBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
+	sbmPreviewBig->SetBitmap( charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ) );
 }
 
 

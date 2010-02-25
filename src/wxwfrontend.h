@@ -1,3 +1,5 @@
+#ifndef FRONENT_HH_INCLUDED
+#define FRONENT_HH_INCLUDED
 #include "resources.h"
 
 class Frontend : public wxFrame{
@@ -191,11 +193,11 @@ class Frontend : public wxFrame{
         //preveiew panel//////////////////////////////////////////////////////////////
         wxStaticBitmap *sbmPreviewBig;
         wxRadioBox *rbxPreview;
-        wxBitmap *bmHeightmap;
-        wxBitmap *bmTexture;
-        wxBitmap *bmMetal;
-        wxBitmap *bmFeature;
-        wxBitmap *bmTypemap;
+		wxBitmap bmHeightmap;
+		wxBitmap bmTexture;
+		wxBitmap bmMetal;
+		wxBitmap bmFeature;
+		wxBitmap bmTypemap;
         wxImage *image;
         //smd creater panel///////////////////////////////////////////////////////////
         wxPanel *pnlSMDGeneral;
@@ -245,3 +247,4 @@ class Frontend : public wxFrame{
         wxTextCtrl *tcTeamCount;
 };
 
+#endif //#ifndef FRONENT_HH_INCLUDED

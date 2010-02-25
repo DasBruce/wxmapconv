@@ -11,3 +11,4 @@ SET(wxmapconvSrc
 	src/uiutils.cpp
 	src/conversion.cpp
 	)
+

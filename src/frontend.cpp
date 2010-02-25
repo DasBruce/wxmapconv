@@ -1,5 +1,10 @@
 #include "wxwfrontend.h"
 
+#include "images/placeholder.png.h"
+#include "images/placeholderbig.png.h"
+#include "uiutils.h"
+
+
 Frontend::Frontend(const wxString& title)
        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(600, 600))
 {
@@ -185,7 +190,7 @@ Frontend::Frontend(const wxString& title)
     rbxQuality->SetItemToolTip(1, wxT("Requires an nvidia 8 gfx card or better."));
 
 //Preview box////////////////////////////////////////////////////////////////////////////////////////
-    sbmPreview = new wxStaticBitmap(pnlMapConv, wxID_ANY, wxBitmap(wxBITMAP(IDBM_PREVIEW_PLACEHOLDER)), wxPoint(10, 10));
+	sbmPreview = new wxStaticBitmap(pnlMapConv, wxID_ANY, charArr2wxBitmap( placeholder_png, sizeof( placeholder_png ) ), wxPoint(10, 10));
 
     gboxPreview->Add(sbmPreview, 1,  wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM | wxTOP, 5);
 //Assemble Heightmap options////////////////////////////////////////////////////////////////////////
@@ -218,7 +223,7 @@ Frontend::Frontend(const wxString& title)
     hboxMain->Add(vboxOptions, 1, wxTOP | wxBOTTOM | wxALIGN_RIGHT, 5);
 
     pnlMapConv->SetSizer(hboxMain);
-    notebook->AddPage(pnlMapConv, "MapConv", true);
+	notebook->AddPage(pnlMapConv, _T("MapConv"), true);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Preview Tab///////////////////////////////////////////////////////////////////////////////////////
@@ -227,16 +232,16 @@ Frontend::Frontend(const wxString& title)
     wxBoxSizer *hboxPreview = new wxBoxSizer(wxHORIZONTAL);
     wxStaticBoxSizer *gboxPreviewBig = new wxStaticBoxSizer(wxVERTICAL, pnlPreview, wxT("Preview"));
 
-    bmHeightmap = new wxBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
-    bmTexture = new wxBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
-    bmMetal = new wxBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
-    bmFeature = new wxBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
-    bmTypemap = new wxBitmap(wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)));
+	bmHeightmap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+	bmTexture = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+	bmMetal = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+	bmFeature = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+	bmTypemap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
 
 
     wxPanel *pnlPreviewBig = new wxPanel(pnlPreview, -1);
     wxBoxSizer *hboxPreviewBig = new wxBoxSizer(wxHORIZONTAL);
-    sbmPreviewBig = new wxStaticBitmap(pnlPreviewBig, wxID_ANY, wxBitmap(wxBITMAP(IDBM_PREVIEW_BIG_PLACEHOLDER)), wxPoint(10, 10));
+	sbmPreviewBig = new wxStaticBitmap(pnlPreviewBig, wxID_ANY, charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ), wxPoint(10, 10));
 
     hboxPreviewBig->Add(sbmPreviewBig, 1, wxEXPAND, 5);
     pnlPreviewBig->SetSizer(hboxPreviewBig);
@@ -254,7 +259,7 @@ Frontend::Frontend(const wxString& title)
     hboxPreview->Add(gboxPreviewBig, 1, wxEXPAND, 5);
     hboxPreview->Add(rbxPreview, 0, wxEXPAND, 5);
     pnlPreview->SetSizer(hboxPreview);
-    notebook->AddPage(pnlPreview, "Preview", true);
+	notebook->AddPage(pnlPreview, _("Preview"), true);
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //SMD///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -735,18 +740,22 @@ void Frontend::OnToggleOtherEnable(wxCommandEvent& event)
 {
     if(bOtherFirstTime == true)
     {
-        tcOtherOptions->SetValue("");
+		tcOtherOptions->SetValue(wxEmptyString);
         bOtherFirstTime = false;
     }
     if(bOtherEnable == false)
     {
-        tcOtherOptions->SetValue("");
+		tcOtherOptions->SetValue(wxEmptyString);
         tcOtherOptions->Enable(true);
     }
     else
     {
-        tcOtherOptions->SetValue("Additional Options");
+		tcOtherOptions->SetValue(_("Additional Options"));
         tcOtherOptions->Enable(false);
     }
     bOtherEnable = !bOtherEnable;
 }
+
+#include "projectNew.cpp"
+#include "projectSave.cpp"
+#include "projectLoad.cpp"
