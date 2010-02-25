@@ -19,6 +19,7 @@ Frontend::Frontend(const wxString& title)
     notebook = new wxNotebook(this, IDNB_MAIN);
     pnlMapConv = new wxPanel(notebook, -1);
     wxBoxSizer *hboxMain = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *main_sizer = new wxBoxSizer(wxHORIZONTAL);
 
 //Vertical box for the files////////////////////////////////////////////////////////////////////////
     wxStaticBoxSizer *gboxFiles = new wxStaticBoxSizer(wxVERTICAL, pnlMapConv, wxT("Files"));
@@ -190,9 +191,9 @@ Frontend::Frontend(const wxString& title)
     pnlSMD = new wxPanel(notebook, -1);            //Create a panel to contain the subnotebook
     nbSMD = new wxNotebook(pnlSMD, wxID_ANY);               //Create the subnotebook
     wxBoxSizer* box = new wxBoxSizer( wxHORIZONTAL );       //create a sizer to expand the subnotebook
-    box->Add( nbSMD, 1, wxEXPAND, 0 );
 
-    wxPanel *pnlSMDGeneral = new wxPanel(pnlSMD, -1);
+
+	wxPanel *pnlSMDGeneral = new wxPanel(nbSMD, -1);
     wxBoxSizer *vboxSMDGeneralMain = new wxBoxSizer(wxVERTICAL);
 	wxStaticBoxSizer *gboxSMDGeneral = new wxStaticBoxSizer(wxVERTICAL, pnlSMDGeneral, _T("General Ma0 Options") );
 	wxStaticBoxSizer *gboxSMDStartPos = new wxStaticBoxSizer(wxVERTICAL, pnlSMDGeneral, _T("Player Start Options") );
@@ -201,14 +202,19 @@ Frontend::Frontend(const wxString& title)
     vboxSMDGeneralMain->Add(gboxSMDStartPos, 1, wxEXPAND, 0);
 
     pnlSMDGeneral->SetSizer(vboxSMDGeneralMain);
+	pnlSMDGeneral->Layout();
 
 	nbSMD->AddPage(pnlSMDGeneral, _T("General"), true);
 	nbSMD->AddPage(pnlSMDGeneral, _T("General2"), true);
+	box->Add( nbSMD, 1, wxEXPAND, 0 );
     pnlSMD->SetSizer( box );
     pnlSMD->Layout();
 
 	notebook->AddPage(pnlSMD, _T("SMD"), true);
     notebook->ChangeSelection(1);
+	main_sizer->Add( notebook, 1, wxEXPAND );
+	SetSizer( main_sizer );
+	Layout();
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //Connect the controls to their appropriate functions///////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
