@@ -101,8 +101,8 @@
 #include <wx/colordlg.h>
 #include <wx/cmndata.h>
 
-#include "images\placeholderbig.png.h"
-#include "images\placeholder.png.h"
+#include "images/placeholderbig.png.h"
+#include "images/placeholder.png.h"
 
 #include "mapconvtab.h"
 #include "previewtab.h"

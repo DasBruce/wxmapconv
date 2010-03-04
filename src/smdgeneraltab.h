@@ -37,7 +37,7 @@ class _smdGeneralTab : public wxPanel{
         wxTextCtrl *tcTeam8X;
         wxTextCtrl *tcTeam8Y;
 
-        void _smdGeneralTab::OnChangeTeamCount(wxCommandEvent& event);
+		void OnChangeTeamCount(wxCommandEvent& event);
 };
 #endif
 

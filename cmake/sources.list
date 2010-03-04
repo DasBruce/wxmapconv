@@ -4,7 +4,6 @@ SET(wxmapconvSrc
 	src/main.cpp
 	src/main.h
 	src/resources.h
-	src/wxwfrontendcompile.cpp
 	src/frontend.cpp
 	src/wxwfrontend.h
 	src/uiutils.cpp
