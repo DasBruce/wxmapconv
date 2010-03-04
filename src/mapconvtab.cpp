@@ -337,7 +337,7 @@ void _mapconvTab::OnClickCompile(wxCommandEvent& event)
     {
         command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -Sinc -quality_highest -file\""));
     }
-    system(command.c_str());
+	system(command.mb_str());
 }
 
 
