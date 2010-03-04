@@ -2,6 +2,8 @@
 
 _smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 {
+    nbSMD = new wxNotebook(this, wxID_ANY);
+
     smdGeneralTab = new _smdGeneralTab(nbSMD, -1);
     smdAtmosphereTab = new _smdAtmosphereTab(nbSMD, -1);
     smdWaterTab = new _smdWaterTab(nbSMD, -1);

@@ -29,8 +29,6 @@ Frontend::Frontend(const wxString& title)
     mapconvTab = new _mapconvTab(notebook, -1);
     previewTab = new _previewTab(notebook, -1);
 	smdTab = new _smdTab(notebook, -1);
-    nbSMD = new wxNotebook(smdTab, wxID_ANY);
-
 
 	notebook->AddPage(mapconvTab, _T("MapConv"), true);
 	notebook->AddPage(previewTab, _("Preview"), true);

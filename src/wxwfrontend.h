@@ -19,7 +19,6 @@ class Frontend : public wxFrame{
         wxMenu *mnAbout;
 
         wxNotebook *notebook;
-        wxNotebook *nbSMD;
 
         _previewTab *previewTab;
         _mapconvTab *mapconvTab;

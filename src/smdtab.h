@@ -12,6 +12,8 @@ class _smdTab : public wxPanel{
     public:
         _smdTab(wxWindow* parent, wxWindowID id);
     private:
+
+        wxNotebook *nbSMD;
         wxButton *btnSMDSave;
         _smdGeneralTab *smdGeneralTab;
         _smdAtmosphereTab *smdAtmosphereTab;
