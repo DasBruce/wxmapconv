@@ -9,5 +9,15 @@ SET(wxmapconvSrc
 	src/wxwfrontend.h
 	src/uiutils.cpp
 	src/conversion.cpp
+	src/previewtab.cpp
+	src/previewtab.h
+	src/smdatmospheretab.cpp
+	src/smdatmospheretab.h
+	src/smdgeneraltab.cpp
+	src/smdgeneraltab.h
+	src/smdwatertab.cpp
+	src/smdwatertab.h
+	src/smdtab.cpp
+	src/smdtab.h
 	)
 
