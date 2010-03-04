@@ -65,26 +65,29 @@
 		<ResourceCompiler>
 			<Add directory="$(#wx)\include" />
 		</ResourceCompiler>
-		<Unit filename="compile.cpp" />
+		<Unit filename="conversion.cpp" />
+		<Unit filename="conversion.h" />
 		<Unit filename="frontend.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
-		<Unit filename="mouse.cpp" />
-		<Unit filename="openFiles.cpp" />
-		<Unit filename="previewControls.cpp" />
-		<Unit filename="projectLoad.cpp" />
-		<Unit filename="projectNew.cpp" />
-		<Unit filename="projectSave.cpp" />
+		<Unit filename="mapconvtab.cpp" />
+		<Unit filename="mapconvtab.h" />
+		<Unit filename="previewtab.cpp" />
+		<Unit filename="previewtab.h" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="resources.h" />
-		<Unit filename="smdControlsAtmospheric.cpp" />
-		<Unit filename="smdControlsGeneral.cpp" />
-		<Unit filename="smdControlsLight.cpp" />
-		<Unit filename="smdControlsWater.cpp" />
-		<Unit filename="smdOpen.cpp" />
-		<Unit filename="smdSave.cpp" />
+		<Unit filename="smdatmospheretab.cpp" />
+		<Unit filename="smdatmospheretab.h" />
+		<Unit filename="smdgeneraltab.cpp" />
+		<Unit filename="smdgeneraltab.h" />
+		<Unit filename="smdtab.cpp" />
+		<Unit filename="smdtab.h" />
+		<Unit filename="smdwatertab.cpp" />
+		<Unit filename="smdwatertab.h" />
+		<Unit filename="uiutils.cpp" />
+		<Unit filename="uiutils.h" />
 		<Unit filename="wxwfrontend.h" />
 		<Extensions>
 			<code_completion />

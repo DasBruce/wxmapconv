@@ -1,5 +1,6 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
+
 #define IDST_HEIGHT      1001
 #define IDST_TEXTURE     1002
 #define IDST_METAL       1003
@@ -99,5 +100,17 @@
 #include <wx/textfile.h>
 #include <wx/colordlg.h>
 #include <wx/cmndata.h>
+
+#include "images\placeholderbig.png.h"
+#include "images\placeholder.png.h"
+
+#include "mapconvtab.h"
+#include "previewtab.h"
+#include "smdgeneraltab.h"
+#include "smdatmospheretab.h"
+#include "smdwatertab.h"
+#include "smdtab.h"
+
+#include "uiutils.h"
 
 #endif
