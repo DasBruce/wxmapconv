@@ -5,8 +5,7 @@
 class _smdGeneralTab : public wxPanel{
     public:
         _smdGeneralTab(wxWindow* parent, wxWindowID id);
-    private:
-        int iOldTeamCount;
+        void reset(void);
 
         wxTextCtrl *tcDescription;
         wxTextCtrl *tcGravity;
@@ -36,6 +35,8 @@ class _smdGeneralTab : public wxPanel{
         wxTextCtrl *tcTeam7Y;
         wxTextCtrl *tcTeam8X;
         wxTextCtrl *tcTeam8Y;
+    private:
+        int iOldTeamCount;
 
 		void OnChangeTeamCount(wxCommandEvent& event);
 };

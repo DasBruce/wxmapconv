@@ -4,15 +4,17 @@
 
 class _smdWaterTab : public wxPanel{
     public:
+        wxColour *colWaterBase;
+        wxColour *colWaterMin;
+        wxColour *colWaterAbsorb;
+
         _smdWaterTab(wxWindow* parent, wxWindowID id);
+        void reset(void);
     private:
         wxColourDialog *cldColour;
         wxColourData *colourData;
         wxColour *tempColour;
 
-        wxColour *colWaterBase;
-        wxColour *colWaterMin;
-        wxColour *colWaterAbsorb;
 
         wxButton *btnWaterBase;
         wxPanel *pnlWaterBaseColourDisplay;

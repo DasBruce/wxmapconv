@@ -16,6 +16,7 @@ class Frontend : public wxFrame{
 
         wxMenuBar *menubar;
         wxMenu *mnFile;
+        wxMenu *mnSMD;
         wxMenu *mnAbout;
 
         wxNotebook *notebook;
@@ -28,10 +29,10 @@ class Frontend : public wxFrame{
         wxImage *image;
 
         void setDefaultsMapconv(void);
-        void setDefaultsSMD(void);
 
         void SaveProject(void);
         void OpenSMD(void);
+        void SaveSMD(void);
 
         void LoadImage(int type);
 
@@ -39,6 +40,7 @@ class Frontend : public wxFrame{
         void OnClickLoadProject(wxCommandEvent& event);
         void OnClickSaveProject(wxCommandEvent& event);
         void OnClickSaveProjectAs(wxCommandEvent& event);
+        void OnClickSMDReset(wxCommandEvent& event);
 		void OnTabSwitch(wxCommandEvent& event);
         void OnClickSMDSave(wxCommandEvent& event);
         void OnMouseEvent(wxCommandEvent& event);

@@ -5,6 +5,23 @@
 class _smdAtmosphereTab : public wxPanel{
     public:
         _smdAtmosphereTab(wxWindow* parent, wxWindowID id);
+
+        wxColour *colSun;
+        wxColour *colSky;
+        wxColour *colCloud;
+        wxColour *colFog;
+
+        wxColour *colGroundAmbient;
+        wxColour *colGroundSun;
+        wxColour *colUnitAmbient;
+        wxColour *colUnitSun;
+
+        wxTextCtrl *tcCloudDensity;
+        wxTextCtrl *tcFogStart;
+        wxTextCtrl *tcGroundShadowDensity;
+        wxTextCtrl *tcUnitShadowDensity;
+
+        void reset(void);
     private:
         wxColourDialog *cldColour;
         wxColourData *colourData;
@@ -17,30 +34,18 @@ class _smdAtmosphereTab : public wxPanel{
         wxPanel *pnlSunColourDisplay;
         wxPanel *pnlSkyColourDisplay;
         wxPanel *pnlCloudColourDisplay;
-        wxTextCtrl *tcCloudDensity;
         wxPanel *pnlFogColourDisplay;
-        wxTextCtrl *tcFogStart;
 
         wxButton *btnGroundAmbientColour;
         wxButton *btnGroundSunColour;
         wxButton *btnUnitAmbientColour;
         wxButton *btnUnitSunColour;
         wxPanel *pnlGroundAmbientColourDisplay;
-        wxTextCtrl *tcGroundShadowDensity;
         wxPanel *pnlGroundSunColourDisplay;
         wxPanel *pnlUnitAmbientColourDisplay;
         wxPanel *pnlUnitSunColourDisplay;
-        wxTextCtrl *tcUnitShadowDensity;
 
-        wxColour *colSun;
-        wxColour *colSky;
-        wxColour *colCloud;
-        wxColour *colFog;
 
-        wxColour *colGroundAmbient;
-        wxColour *colGroundSun;
-        wxColour *colUnitAmbient;
-        wxColour *colUnitSun;
         wxPanel *pnlSunDirection;
 
         void OnClickSunColour(wxCommandEvent& event);

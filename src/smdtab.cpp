@@ -1,7 +1,6 @@
 #include "smdtab.h"
 
-_smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
-{
+_smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id){
     nbSMD = new wxNotebook(this, wxID_ANY);
 
     smdGeneralTab = new _smdGeneralTab(nbSMD, -1);
@@ -22,4 +21,10 @@ _smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 
     this->SetSizer( box );
     this->Layout();
+}
+
+void _smdTab::reset(void){
+    smdGeneralTab->reset();
+    smdAtmosphereTab->reset();
+    smdWaterTab->reset();
 }

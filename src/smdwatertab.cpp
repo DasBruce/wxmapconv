@@ -45,6 +45,18 @@ _smdWaterTab::_smdWaterTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id
     Connect(IDBTN_WATERMIN_COLOUR, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_smdWaterTab::OnClickWaterMinColour));
     Connect(IDBTN_WATERABSORB_COLOUR, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_smdWaterTab::OnClickWaterAbsorbColour));
 }
+
+void _smdWaterTab::reset(void)
+{
+
+    colWaterBase->Set(100, 150, 200);
+    colWaterMin->Set(10, 10, 30);
+    colWaterAbsorb->Set(4, 4, 2);
+
+    pnlWaterBaseColourDisplay->SetBackgroundColour(*colWaterBase);
+    pnlWaterMinColourDisplay->SetBackgroundColour(*colWaterMin);
+    pnlWaterAbsorbColourDisplay->SetBackgroundColour(*colWaterAbsorb);
+}
 void _smdWaterTab::OnClickWaterBaseColour(wxCommandEvent& event){
     cldColour = new wxColourDialog(this);
     colourData = new wxColourData;
@@ -58,7 +70,6 @@ void _smdWaterTab::OnClickWaterBaseColour(wxCommandEvent& event){
     delete cldColour;
     delete colourData;
 }
-
 void _smdWaterTab::OnClickWaterMinColour(wxCommandEvent& event){
     cldColour = new wxColourDialog(this);
     colourData = new wxColourData;
@@ -72,7 +83,6 @@ void _smdWaterTab::OnClickWaterMinColour(wxCommandEvent& event){
     delete cldColour;
     delete colourData;
 }
-
 void _smdWaterTab::OnClickWaterAbsorbColour(wxCommandEvent& event){
     cldColour = new wxColourDialog(this);
     colourData = new wxColourData;

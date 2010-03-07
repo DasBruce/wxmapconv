@@ -1,5 +1,17 @@
 #include "smdgeneraltab.h"
 
+#define GRAVITY "130"
+#define MAPHARDNESS "100"
+#define MAXMETAL "3.0"
+#define EXTRACTORRADIUS "50"
+#define TIDALSTRENGTH "20"
+#define MAXWIND "30"
+#define MINWIND "10"
+#define MAXHEIGHT "250"
+#define MINHEIGHT "25"
+#define STARTPOSX "64"
+#define STARTPOSY "64"
+
 _smdGeneralTab::_smdGeneralTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 {
     wxBoxSizer *vboxSMDGeneralMain = new wxBoxSizer(wxVERTICAL);
@@ -9,23 +21,23 @@ _smdGeneralTab::_smdGeneralTab(wxWindow* parent, wxWindowID id) : wxPanel(parent
     wxStaticText *stDescription = new wxStaticText(this, wxID_ANY, wxT("Description"));
     tcDescription = new wxTextCtrl(this, wxID_ANY, wxT("Description of your map"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     wxStaticText *stGravity = new wxStaticText(this, wxID_ANY, wxT("Gravity"));
-    tcGravity = new wxTextCtrl(this, wxID_ANY, wxT("130"));
+    tcGravity = new wxTextCtrl(this, wxID_ANY, wxT(GRAVITY));
     wxStaticText *stMapHardness = new wxStaticText(this, wxID_ANY, wxT("Map Hardness"));
-    tcMapHardness = new wxTextCtrl(this, wxID_ANY, wxT("100"));
+    tcMapHardness = new wxTextCtrl(this, wxID_ANY, wxT(MAPHARDNESS));
     wxStaticText *stMaxMetal = new wxStaticText(this, wxID_ANY, wxT("Max Metal"));
-    tcMaxMetal = new wxTextCtrl(this, wxID_ANY, wxT("3.0"));
+    tcMaxMetal = new wxTextCtrl(this, wxID_ANY, wxT(MAXMETAL));
     wxStaticText *stExtractorRadius = new wxStaticText(this, wxID_ANY, wxT("Extractor Radius"));
-    tcExtractorRadius = new wxTextCtrl(this, wxID_ANY, wxT("50"));
+    tcExtractorRadius = new wxTextCtrl(this, wxID_ANY, wxT(EXTRACTORRADIUS));
     wxStaticText *stTidalStrength = new wxStaticText(this, wxID_ANY, wxT("TidalStrength"));
-    tcTidalStrength = new wxTextCtrl(this, wxID_ANY, wxT("20"));
+    tcTidalStrength = new wxTextCtrl(this, wxID_ANY, wxT(TIDALSTRENGTH));
     wxStaticText *stMaxWind = new wxStaticText(this, wxID_ANY, wxT("MaxWind"));
-    tcMaxWind = new wxTextCtrl(this, IDTC_MAX_HEIGHT, wxT("30"));
+    tcMaxWind = new wxTextCtrl(this, IDTC_MAX_HEIGHT, wxT(MAXWIND));
     wxStaticText *stMinWind = new wxStaticText(this, wxID_ANY, wxT("MinWind"));
-    tcMinWind = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT("10"));
+    tcMinWind = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT(MINWIND));
     wxStaticText *stMaxHeight = new wxStaticText(this, wxID_ANY, wxT("Max Height"));
-    tcMaxHeight = new wxTextCtrl(this, IDTC_MAX_HEIGHT, wxT("250"));
+    tcMaxHeight = new wxTextCtrl(this, IDTC_MAX_HEIGHT, wxT(MAXHEIGHT));
     wxStaticText *stMinHeight = new wxStaticText(this, wxID_ANY, wxT("Min Height"));
-    tcMinHeight = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT("25"));
+    tcMinHeight = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT(MINHEIGHT));
 
     wxStaticBoxSizer *gboxSMDStartPos = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Player Start Options"));
 
@@ -275,3 +287,17 @@ void _smdGeneralTab::OnChangeTeamCount(wxCommandEvent& event){
         }
     }
 }
+
+void _smdGeneralTab::reset(void)
+{
+    tcGravity->SetValue(wxT(GRAVITY));
+    tcMapHardness->SetValue(wxT(MAPHARDNESS));
+    tcMaxMetal->SetValue(wxT(MAXMETAL));
+    tcExtractorRadius->SetValue(wxT(EXTRACTORRADIUS));
+    tcTidalStrength->SetValue(wxT(TIDALSTRENGTH));
+    tcMaxWind->SetValue(wxT(MAXWIND));
+    tcMinWind->SetValue(wxT(MINWIND));
+    tcMaxHeight->SetValue(wxT(MAXHEIGHT));
+    tcMinHeight->SetValue(wxT(MINHEIGHT));
+}
+

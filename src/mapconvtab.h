@@ -62,6 +62,8 @@ class _mapconvTab : public wxPanel{
 
         wxButton *btnCompile;
 
+        void reset(void);
+
         void OnOpenHeight(wxCommandEvent& event);
         void OnOpenTexture(wxCommandEvent& event);
         void OnOpenMetal(wxCommandEvent& event);

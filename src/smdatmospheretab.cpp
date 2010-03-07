@@ -1,5 +1,6 @@
 #include "smdatmospheretab.h"
 
+//public
 _smdAtmosphereTab::_smdAtmosphereTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 {
 
@@ -53,18 +54,15 @@ _smdAtmosphereTab::_smdAtmosphereTab(wxWindow* parent, wxWindowID id) : wxPanel(
     fgSMDAtmosphere->Add(btnSunColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlSunColourDisplay, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
         pnlSunColourDisplay->SetBackgroundColour(*colSun);
-        pnlSunColourDisplay->Refresh();
     fgSMDAtmosphere->Add(stSkyColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(btnSkyColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlSkyColourDisplay, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
         pnlSkyColourDisplay->SetBackgroundColour(*colSky);
-        pnlSkyColourDisplay->Refresh();
 
     fgSMDAtmosphere->Add(stCloudColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(btnCloudColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlCloudColourDisplay, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
         pnlCloudColourDisplay->SetBackgroundColour(*colCloud);
-        pnlCloudColourDisplay->Refresh();
     fgSMDAtmosphere->Add(stCloudDensity, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(tcCloudDensity, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlCloudDensityPlacehold, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
@@ -73,7 +71,6 @@ _smdAtmosphereTab::_smdAtmosphereTab(wxWindow* parent, wxWindowID id) : wxPanel(
     fgSMDAtmosphere->Add(btnFogColour, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlFogColourDisplay, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
         pnlFogColourDisplay->SetBackgroundColour(*colFog);
-        pnlFogColourDisplay->Refresh();
     fgSMDAtmosphere->Add(stFogStart, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(tcFogStart, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     fgSMDAtmosphere->Add(pnlFogStartPlacehold, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
@@ -173,6 +170,36 @@ _smdAtmosphereTab::_smdAtmosphereTab(wxWindow* parent, wxWindowID id) : wxPanel(
     Connect(IDTC_GROUND_SHADOW_DENSITY, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_smdAtmosphereTab::OnChangeUnitShadowDensityText));
 }
 
+void _smdAtmosphereTab::reset(void)
+{
+    colSun->Set(255, 190, 20);
+    colSky->Set(20, 20, 240);
+    colCloud->Set(150, 150, 150);
+    colFog->Set(100, 100, 100);
+    colGroundAmbient->Set(127, 127, 127);
+    colGroundSun->Set(127, 127, 127);
+    colUnitAmbient->Set(127, 127, 127);
+    colUnitSun->Set(127, 127, 127);
+
+    pnlSunColourDisplay->SetBackgroundColour(*colSun);
+    pnlSkyColourDisplay->SetBackgroundColour(*colSky);
+    pnlCloudColourDisplay->SetBackgroundColour(*colCloud);
+    pnlFogColourDisplay->SetBackgroundColour(*colFog);
+    pnlGroundAmbientColourDisplay->SetBackgroundColour(*colGroundAmbient);
+    pnlGroundSunColourDisplay->SetBackgroundColour(*colGroundSun);
+    pnlUnitAmbientColourDisplay->SetBackgroundColour(*colUnitAmbient);
+    pnlUnitSunColourDisplay->SetBackgroundColour(*colUnitSun);
+
+    pnlSunColourDisplay->Refresh();
+    pnlSkyColourDisplay->Refresh();
+    pnlCloudColourDisplay->Refresh();
+    pnlFogColourDisplay->Refresh();
+    pnlGroundAmbientColourDisplay->Refresh();
+    pnlGroundSunColourDisplay->Refresh();
+    pnlUnitAmbientColourDisplay->Refresh();
+    pnlUnitSunColourDisplay->Refresh();
+}
+//private
 void _smdAtmosphereTab::OnClickSunColour(wxCommandEvent& event)
 {
     cldColour = new wxColourDialog(this);
@@ -294,4 +321,3 @@ void _smdAtmosphereTab::OnChangeUnitShadowDensityText(wxCommandEvent& event){
 }
 void _smdAtmosphereTab::OnChangeGroundShadowDensityText(wxCommandEvent& event){
 }
-//

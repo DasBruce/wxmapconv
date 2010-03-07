@@ -202,7 +202,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 
 }
 
-
 void _mapconvTab::OnOpenHeight(wxCommandEvent& event)
 {
     openFileDialog = new wxFileDialog(this);
@@ -289,58 +288,6 @@ void _mapconvTab::OnOpenOutput(wxCommandEvent& event)
     }
 }
 
-void _mapconvTab::OnClickCompile(wxCommandEvent& event)
-{
-    wxString command;
-    command.append(wxT("MapConv"));
-
-    if(bLowpass)
-        command.append(wxT(" -l"));
-    if(bInvert)
-        command.append(wxT(" -i"));
-    command.append(wxT(" -c ") + tcCompression->GetValue());//compression
-    command.append(wxT(" -x ") + tcMax->GetValue());        //height maximum
-    command.append(wxT(" -n ") + tcMin->GetValue());        //height minimum
-
-    command.append(wxT(" -o \"") + tcOutput->GetValue() + wxT("\""));     //output
-    command.append(wxT(" -t \"") + tcTexture->GetValue() + wxT("\""));    //texture
-    command.append(wxT(" -a \"") + tcHeight->GetValue() + wxT("\""));     //heightmap
-    command.append(wxT(" -m \"") + tcMetal->GetValue() + wxT("\""));      //metalmap
-    command.append(wxT(" -g \"") + tcGeovent->GetValue() + wxT("\""));    //geoventmap
-
-    if(bFeatureEnable)
-    {
-        command.append(wxT(" -f \"") + tcFeature->GetValue() + wxT("\""));
-        command.append(wxT(" -j \"") + tcFeatureList->GetValue() + wxT("\""));
-    }
-    if(bTypemapEnable)
-    {
-        command.append(wxT(" -y \"") + tcType->GetValue() + wxT("\""));
-    }
-    if(bOtherEnable)
-    {
-        command.append(wxT(" ") + tcOtherOptions->GetValue());
-    }
-    int iQuality = rbxQuality->GetSelection();
-    if(iQuality == 0)
-    {
-        command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -quick -file\""));
-    }
-    else if(iQuality == 1)
-    {
-        command.append(wxT(" -q "));
-    }
-    else if(iQuality == 2)
-    {
-    }
-    else if(iQuality == 3)
-    {
-        command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -Sinc -quality_highest -file\""));
-    }
-    system(command.c_str());
-}
-
-
 void _mapconvTab::OnToggleLowpass(wxCommandEvent& event)
 {
     bLowpass=!bLowpass;
@@ -400,36 +347,92 @@ void _mapconvTab::OnToggleOtherEnable(wxCommandEvent& event)
     }
     bOtherEnable = !bOtherEnable;
 }
+
+void _mapconvTab::OnClickCompile(wxCommandEvent& event)
+{
+    wxString command;
+    command.append(wxT("MapConv"));
+
+    if(bLowpass)
+        command.append(wxT(" -l"));
+    if(bInvert)
+        command.append(wxT(" -i"));
+    command.append(wxT(" -c ") + tcCompression->GetValue());//compression
+    command.append(wxT(" -x ") + tcMax->GetValue());        //height maximum
+    command.append(wxT(" -n ") + tcMin->GetValue());        //height minimum
+
+    command.append(wxT(" -o \"") + tcOutput->GetValue() + wxT("\""));     //output
+    command.append(wxT(" -t \"") + tcTexture->GetValue() + wxT("\""));    //texture
+    command.append(wxT(" -a \"") + tcHeight->GetValue() + wxT("\""));     //heightmap
+    command.append(wxT(" -m \"") + tcMetal->GetValue() + wxT("\""));      //metalmap
+    command.append(wxT(" -g \"") + tcGeovent->GetValue() + wxT("\""));    //geoventmap
+
+    if(bFeatureEnable)
+    {
+        command.append(wxT(" -f \"") + tcFeature->GetValue() + wxT("\""));
+        command.append(wxT(" -j \"") + tcFeatureList->GetValue() + wxT("\""));
+    }
+    if(bTypemapEnable)
+    {
+        command.append(wxT(" -y \"") + tcType->GetValue() + wxT("\""));
+    }
+    if(bOtherEnable)
+    {
+        command.append(wxT(" ") + tcOtherOptions->GetValue());
+    }
+    int iQuality = rbxQuality->GetSelection();
+    if(iQuality == 0)
+    {
+        command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -quick -file\""));
+    }
+    else if(iQuality == 1)
+    {
+        command.append(wxT(" -q "));
+    }
+    else if(iQuality == 2)
+    {
+    }
+    else if(iQuality == 3)
+    {
+        command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -Sinc -quality_highest -file\""));
+    }
+    system(command.c_str());
+}
+
+void _mapconvTab::reset(void)
+{
+    bLowpass = true;
+    bInvert = true;
+//    bFeatureEnable = false;
+//    bTypemapEnable = false;
+//    bOtherEnable = false;
+//    bOtherFirstTime = true;
+//    bTextureLoaded = false;
+
+    cbLowpass->SetValue(bLowpass);
+    cbInvert->SetValue(bInvert);
+    btnFeature->Enable(bFeatureEnable);
+    tcFeature->Enable(bFeatureEnable);
+    btnFeatureList->Enable(bFeatureEnable);
+    tcFeatureList->Enable(bFeatureEnable);
+    btnType->Enable(bTypemapEnable);
+    tcType->Enable(bTypemapEnable);
+    cbOtherOptionsEnable->SetValue(bOtherEnable);
+    tcOtherOptions->Enable(bOtherEnable);
+
+    tcHeight->SetValue(wxT("heightmap.bmp"));
+    tcTexture->SetValue(wxT("texture.bmp"));
+    tcMetal->SetValue(wxT("metal.bmp"));
+    tcFeature->SetValue(wxT("feature.bmp"));
+    tcFeatureList->SetValue(wxT("featurelist.txt"));
+    tcType->SetValue(wxT("typemap.bmp"));
+    tcGeovent->SetValue(wxT("geovent.bmp"));
+    tcOutput->SetValue(wxT("output.smf"));
+    tcOtherOptions->SetValue(wxT(""));
+
+//	sbmPreviewBig->SetBitmap( charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ) );
+
+}
 //void _mapconvTab::setDefaultsMapconv(void){
 ////MapConv Options//
-//    bLowpass = true;
-//    bInvert = true;
-////    bFeatureEnable = false;
-////    bTypemapEnable = false;
-////    bOtherEnable = false;
-////    bOtherFirstTime = true;
-////    bTextureLoaded = false;
-//
-//    cbLowpass->SetValue(bLowpass);
-//    cbInvert->SetValue(bInvert);
-//    btnFeature->Enable(bFeatureEnable);
-//    tcFeature->Enable(bFeatureEnable);
-//    btnFeatureList->Enable(bFeatureEnable);
-//    tcFeatureList->Enable(bFeatureEnable);
-//    btnType->Enable(bTypemapEnable);
-//    tcType->Enable(bTypemapEnable);
-//    cbOtherOptionsEnable->SetValue(bOtherEnable);
-//    tcOtherOptions->Enable(bOtherEnable);
-//
-//    tcHeight->SetValue(wxT("heightmap.bmp"));
-//    tcTexture->SetValue(wxT("texture.bmp"));
-//    tcMetal->SetValue(wxT("metal.bmp"));
-//    tcFeature->SetValue(wxT("feature.bmp"));
-//    tcFeatureList->SetValue(wxT("featurelist.txt"));
-//    tcType->SetValue(wxT("typemap.bmp"));
-//    tcGeovent->SetValue(wxT("geovent.bmp"));
-//    tcOutput->SetValue(wxT("output.smf"));
-//    tcOtherOptions->SetValue(wxT(""));
-//
-////	sbmPreviewBig->SetBitmap( charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ) );
 //}

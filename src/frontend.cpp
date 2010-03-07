@@ -12,6 +12,7 @@ Frontend::Frontend(const wxString& title)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
     menubar = new wxMenuBar;
     mnFile = new wxMenu;
+    mnSMD = new wxMenu;
     mnAbout = new wxMenu;
 
     mnFile->Append(IDMENU_NEW, wxT("&New"));
@@ -21,7 +22,11 @@ Frontend::Frontend(const wxString& title)
     mnFile->AppendSeparator();
     mnFile->Append(wxID_EXIT, wxT("&Quit"));
 
+    mnSMD->Append(IDMENU_SMDRESET, wxT("&Reset"));
+
     menubar->Append(mnFile, wxT("&File"));
+    menubar->Append(mnSMD, wxT("&SMD"));
+
     SetMenuBar(menubar);
 
 
@@ -42,6 +47,8 @@ Frontend::Frontend(const wxString& title)
     Connect(IDMENU_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProject));
     Connect(IDMENU_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickLoadProject));
 
+    Connect(IDMENU_SMDRESET, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDReset));
+
     Connect(IDBTN_SMD_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnClickSMDSave));
 
     Centre();
@@ -55,7 +62,7 @@ void Frontend::OnClickNew(wxCommandEvent& event){
         sProjectName = newfiledialog->GetFilename();
         this->SetTitle(wxT("Mapconv Frontend - ") + sProjectName);
 //        setDefaultsMapconv();
-        setDefaultsSMD();
+        smdTab->reset();
 
         SaveProject();
     }
@@ -63,28 +70,7 @@ void Frontend::OnClickNew(wxCommandEvent& event){
 }
 
 
-
-
-void Frontend::setDefaultsSMD(void){
-////Atmospheric Options//
-//    colSun->Set(255, 190, 20);
-//    colSky->Set(20, 20, 240);
-//    colCloud->Set(150, 150, 150);
-//    colFog->Set(100, 100, 100);
-////Light Options//
-//    colGroundAmbient->Set(127, 127, 127);
-//    colGroundSun->Set(127, 127, 127);
-//    colUnitAmbient->Set(127, 127, 127);
-//    colUnitSun->Set(127, 127, 127);
-////Water Options//
-//    colWaterBase->Set(100, 150, 200);
-//    colWaterMin->Set(10, 10, 30);
-//    colWaterAbsorb->Set(4, 4, 2);
-}
-
-
-void Frontend::OnClickSaveProject(wxCommandEvent& event)
-{
+void Frontend::OnClickSaveProject(wxCommandEvent& event){
     if(!bSaved)
     {
         wxFileDialog* saveAsFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
@@ -99,8 +85,7 @@ void Frontend::OnClickSaveProject(wxCommandEvent& event)
         SaveProject();
 }
 
-void Frontend::OnClickSaveProjectAs(wxCommandEvent& event)
-{
+void Frontend::OnClickSaveProjectAs(wxCommandEvent& event){
     wxFileDialog* saveAsFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
     if (openFileDialog->ShowModal() == wxID_OK)
     {
@@ -108,6 +93,10 @@ void Frontend::OnClickSaveProjectAs(wxCommandEvent& event)
         SaveProject();
     }
     delete saveAsFileDialog;
+}
+
+void Frontend::OnClickSMDReset(wxCommandEvent& event){
+    smdTab->reset();
 }
 
 void Frontend::SaveProject(void)
@@ -704,137 +693,142 @@ void Frontend::OpenSMD(void)
 
 void Frontend::OnClickSMDSave(wxCommandEvent& event)
 {
+    SaveSMD();
+}
+
+void Frontend::SaveSMD(void)
+{
     wxString sBuffer;
     wxFile file;
-//    int iTeamCount;
-////A large number of variables are read as char's but need to be stored as floats between 1 and 0
-//    wxString sSunRed = wxString::Format(wxT("%f"), (float)colSun->Red()/255);
-//    wxString sSunGreen = wxString::Format(wxT("%f"), (float)colSun->Green()/255);
-//    wxString sSunBlue = wxString::Format(wxT("%f"), (float)colSun->Blue()/255);
-//
-//    wxString sSkyRed = wxString::Format(wxT("%f"), (float)colSky->Red()/255);
-//    wxString sSkyGreen = wxString::Format(wxT("%f"), (float)colSky->Green()/255);
-//    wxString sSkyBlue = wxString::Format(wxT("%f"), (float)colSky->Blue()/255);
-//    wxString sCloudRed = wxString::Format(wxT("%f"), (float)colCloud->Red()/255);
-//    wxString sCloudGreen = wxString::Format(wxT("%f"), (float)colCloud->Green()/255);
-//    wxString sCloudBlue = wxString::Format(wxT("%f"), (float)colCloud->Blue()/255);
-//    wxString sFogRed = wxString::Format(wxT("%f"), (float)colFog->Red()/255);
-//    wxString sFogGreen = wxString::Format(wxT("%f"), (float)colFog->Green()/255);
-//    wxString sFogBlue = wxString::Format(wxT("%f"), (float)colFog->Blue()/255);
-//
-//    wxString sGroundAmbientRed = wxString::Format(wxT("%f"), (float)colGroundAmbient->Red()/255);
-//    wxString sGroundAmbientGreen = wxString::Format(wxT("%f"), (float)colGroundAmbient->Green()/255);
-//    wxString sGroundAmbientBlue = wxString::Format(wxT("%f"), (float)colGroundAmbient->Blue()/255);
-//    wxString sGroundSunRed = wxString::Format(wxT("%f"), (float)colGroundSun->Red()/255);
-//    wxString sGroundSunGreen = wxString::Format(wxT("%f"), (float)colGroundSun->Green()/255);
-//    wxString sGroundSunBlue = wxString::Format(wxT("%f"), (float)colGroundSun->Blue()/255);
-//    wxString sUnitSunRed = wxString::Format(wxT("%f"), (float)colUnitSun->Red()/255);
-//    wxString sUnitSunGreen = wxString::Format(wxT("%f"), (float)colUnitSun->Green()/255);
-//    wxString sUnitSunBlue = wxString::Format(wxT("%f"), (float)colUnitSun->Blue()/255);
-//    wxString sUnitAmbientRed = wxString::Format(wxT("%f"), (float)colUnitAmbient->Red()/255);
-//    wxString sUnitAmbientGreen = wxString::Format(wxT("%f"), (float)colUnitAmbient->Green()/255);
-//    wxString sUnitAmbientBlue = wxString::Format(wxT("%f"), (float)colUnitAmbient->Blue()/255);
-//
-//    wxString sWaterBaseRed = wxString::Format(wxT("%f"), (float)colWaterBase->Red()/255);
-//    wxString sWaterBaseGreen = wxString::Format(wxT("%f"), (float)colWaterBase->Green()/255);
-//    wxString sWaterBaseBlue = wxString::Format(wxT("%f"), (float)colWaterBase->Blue()/255);
-//    wxString sWaterMinRed = wxString::Format(wxT("%f"), (float)colWaterMin->Red()/255);
-//    wxString sWaterMinGreen = wxString::Format(wxT("%f"), (float)colWaterMin->Green()/255);
-//    wxString sWaterMinBlue = wxString::Format(wxT("%f"), (float)colWaterMin->Blue()/255);
-//    wxString sWaterAbsorbRed = wxString::Format(wxT("%f"), (float)colWaterAbsorb->Red()/255);
-//    wxString sWaterAbsorbGreen = wxString::Format(wxT("%f"), (float)colWaterAbsorb->Green()/255);
-//    wxString sWaterAbsorbBlue = wxString::Format(wxT("%f"), (float)colWaterAbsorb->Blue()/255);
-//
-//    sFogRed.Truncate(5);
-//    sFogGreen.Truncate(5);
-//    sFogBlue.Truncate(5);
-//    sSunRed.Truncate(5);
-//    sSunGreen.Truncate(5);
-//    sSunBlue.Truncate(5);
-//    sSkyRed.Truncate(5);
-//    sSkyGreen.Truncate(5);
-//    sSkyBlue.Truncate(5);
-//    sCloudRed.Truncate(5);
-//    sCloudGreen.Truncate(5);
-//    sCloudBlue.Truncate(5);
-//
-//    sGroundAmbientRed.Truncate(5);
-//    sGroundAmbientGreen.Truncate(5);
-//    sGroundAmbientBlue.Truncate(5);
-//    sGroundSunRed.Truncate(5);
-//    sGroundSunGreen.Truncate(5);
-//    sGroundSunBlue.Truncate(5);
-//    sUnitAmbientRed.Truncate(5);
-//    sUnitAmbientGreen.Truncate(5);
-//    sUnitAmbientBlue.Truncate(5);
-//    sUnitSunRed.Truncate(5);
-//    sUnitSunGreen.Truncate(5);
-//    sUnitSunBlue.Truncate(5);
-//
-//    sWaterBaseRed.Truncate(5);
-//    sWaterBaseGreen.Truncate(5);
-//    sWaterBaseBlue.Truncate(5);
-//    sWaterMinRed.Truncate(5);
-//    sWaterMinGreen.Truncate(5);
-//    sWaterMinBlue.Truncate(5);
-//    sWaterAbsorbRed.Truncate(6);
-//    sWaterAbsorbGreen.Truncate(6);
-//    sWaterAbsorbBlue.Truncate(6);
+    int iTeamCount;
+//A large number of variables are read as char's but need to be stored as floats between 1 and 0
+
+    wxString sSunRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSun->Red()/255);
+    wxString sSunGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSun->Green()/255);
+    wxString sSunBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSun->Blue()/255);
+    wxString sSkyRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSky->Red()/255);
+    wxString sSkyGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSky->Green()/255);
+    wxString sSkyBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colSky->Blue()/255);
+    wxString sCloudRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colCloud->Red()/255);
+    wxString sCloudGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colCloud->Green()/255);
+    wxString sCloudBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colCloud->Blue()/255);
+    wxString sFogRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colFog->Red()/255);
+    wxString sFogGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colFog->Green()/255);
+    wxString sFogBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colFog->Blue()/255);
+
+    wxString sGroundAmbientRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundAmbient->Red()/255);
+    wxString sGroundAmbientGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundAmbient->Green()/255);
+    wxString sGroundAmbientBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundAmbient->Blue()/255);
+    wxString sGroundSunRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundSun->Red()/255);
+    wxString sGroundSunGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundSun->Green()/255);
+    wxString sGroundSunBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colGroundSun->Blue()/255);
+    wxString sUnitSunRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitSun->Red()/255);
+    wxString sUnitSunGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitSun->Green()/255);
+    wxString sUnitSunBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitSun->Blue()/255);
+    wxString sUnitAmbientRed = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitAmbient->Red()/255);
+    wxString sUnitAmbientGreen = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitAmbient->Green()/255);
+    wxString sUnitAmbientBlue = wxString::Format(wxT("%f"), (float)smdTab->smdAtmosphereTab->colUnitAmbient->Blue()/255);
+
+    wxString sWaterBaseRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterBase->Red()/255);
+    wxString sWaterBaseGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterBase->Green()/255);
+    wxString sWaterBaseBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterBase->Blue()/255);
+    wxString sWaterMinRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterMin->Red()/255);
+    wxString sWaterMinGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterMin->Green()/255);
+    wxString sWaterMinBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterMin->Blue()/255);
+    wxString sWaterAbsorbRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Red()/255);
+    wxString sWaterAbsorbGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Green()/255);
+    wxString sWaterAbsorbBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Blue()/255);
+
+    sFogRed.Truncate(5);
+    sFogGreen.Truncate(5);
+    sFogBlue.Truncate(5);
+    sSunRed.Truncate(5);
+    sSunGreen.Truncate(5);
+    sSunBlue.Truncate(5);
+    sSkyRed.Truncate(5);
+    sSkyGreen.Truncate(5);
+    sSkyBlue.Truncate(5);
+    sCloudRed.Truncate(5);
+    sCloudGreen.Truncate(5);
+    sCloudBlue.Truncate(5);
+
+    sGroundAmbientRed.Truncate(5);
+    sGroundAmbientGreen.Truncate(5);
+    sGroundAmbientBlue.Truncate(5);
+    sGroundSunRed.Truncate(5);
+    sGroundSunGreen.Truncate(5);
+    sGroundSunBlue.Truncate(5);
+    sUnitAmbientRed.Truncate(5);
+    sUnitAmbientGreen.Truncate(5);
+    sUnitAmbientBlue.Truncate(5);
+    sUnitSunRed.Truncate(5);
+    sUnitSunGreen.Truncate(5);
+    sUnitSunBlue.Truncate(5);
+
+    sWaterBaseRed.Truncate(5);
+    sWaterBaseGreen.Truncate(5);
+    sWaterBaseBlue.Truncate(5);
+    sWaterMinRed.Truncate(5);
+    sWaterMinGreen.Truncate(5);
+    sWaterMinBlue.Truncate(5);
+    sWaterAbsorbRed.Truncate(6);
+    sWaterAbsorbGreen.Truncate(6);
+    sWaterAbsorbBlue.Truncate(6);
 
     file.Open(wxT("map.smd"), wxFile::write);
     file.Write(wxT("[MAP]\n{\n"));
-//        file.Write(wxT("\tDescription=") + tcDescription->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\tTidalStrength=") + tcTidalStrength->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\tGravity=") + tcGravity->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\tMaxMetal=") + tcMaxMetal->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\tExtractorRadius=") + tcExtractorRadius->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\tMapHardness=") + tcMapHardness->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\t[SMF]\n\t{\n"));
-//            file.Write(wxT("\t\tminheight = ") + tcMinHeight->GetValue() + wxT(";\n"));
-//            file.Write(wxT("\t\tmaxheight = ") + tcMaxHeight->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\t}\n\t[ATMOSPHERE]\n\t{\n"));
-//            file.Write(wxT("\t\tFogColour=") + sFogRed + wxT(" ") + sFogGreen + wxT(" ") + sFogBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tFogStart=") + tcFogStart->GetValue() + wxT(";\n"));
-//            file.Write(wxT("\t\tSunColour=") + sSunRed + wxT(" ") + sSunGreen + wxT(" ") + sSunBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tSkyColour=") + sSkyRed + wxT(" ") + sSkyGreen + wxT(" ") + sSkyBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tCloudColour=") + sCloudRed + wxT(" ") + sCloudGreen + wxT(" ") + sCloudBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tCloudDensity=") + tcCloudDensity->GetValue() + wxT(";\n"));
-//            file.Write(wxT("\t\tMinWind=") + tcMinWind->GetValue() + wxT(";\n"));
-//            file.Write(wxT("\t\tMaxWind=") + tcMaxWind->GetValue() + wxT(";\n"));
-//        file.Write(wxT("\t}\n\t[LIGHT]\n\t{\n"));
-//            file.Write(wxT("\t\tSunDir=1 2 0;\n"));//            file.Write(wxT("\t\tSunDir=") + tcSunDirX->GetValue() + wxT(" ") + tcSunDirY->GetValue() + wxT(" ") + tcSunDirZ->GetValue() + wxT(";\n"));
-//            file.Write(wxT("\t\tGroundAmbientColour=") + sGroundAmbientRed + wxT(" ") + sGroundAmbientGreen + wxT(" ") + sGroundAmbientBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tGroundSunColour=") + sGroundSunRed + wxT(" ") + sGroundSunGreen + wxT(" ") + sGroundSunBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tGroundShadowDensity=") + tcGroundShadowDensity->GetValue() +wxT(";\n"));
-//            file.Write(wxT("\t\tUnitAmbientColour=") + sUnitAmbientRed + wxT(" ") + sUnitAmbientGreen + wxT(" ") + sUnitAmbientBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tUnitSunColour=") + sUnitSunRed + wxT(" ") + sUnitSunGreen + wxT(" ") + sUnitSunBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tUnitShadowDensity=") + tcUnitShadowDensity->GetValue() +wxT(";\n"));
-//        file.Write(wxT("\t}\n\t[WATER]\n\t{\n"));
-//            file.Write(wxT("\t\tWaterBaseColour=") + sWaterBaseRed + wxT(" ") + sWaterBaseGreen + wxT(" ") + sWaterBaseBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tWaterMinColour=") + sWaterMinRed + wxT(" ") + sWaterMinGreen + wxT(" ") + sWaterMinBlue + wxT(";\n"));
-//            file.Write(wxT("\t\tWaterAbsorbColour=") + sWaterAbsorbRed + wxT(" ") + sWaterAbsorbGreen + wxT(" ") + sWaterAbsorbBlue + wxT(";\n"));
-//        file.Write(wxT("\t}\n"));
-//        iTeamCount = wxAtoi(tcTeamCount->GetValue());
-//        switch(iTeamCount){
-//            case 8:
-//                file.Write(wxT("\t[TEAM7]\n\t{\n\t\tStartPosX=") + tcTeam8X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam8Y->GetValue() + wxT(";\n\t}\n"));
-//            case 7:
-//                file.Write(wxT("\t[TEAM6]\n\t{\n\t\tStartPosX=") + tcTeam7X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam7Y->GetValue() + wxT(";\n\t}\n"));
-//            case 6:
-//                file.Write(wxT("\t[TEAM5]\n\t{\n\t\tStartPosX="));
-//            case 5:
-//                file.Write(wxT("\t[TEAM4]\n\t{\n\t\tStartPosX=") + tcTeam5X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam5Y->GetValue() + wxT(";\n\t}\n"));
-//            case 4:
-//                file.Write(wxT("\t[TEAM3]\n\t{\n\t\tStartPosX=") + tcTeam4X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam4Y->GetValue() + wxT(";\n\t}\n"));
-//            case 3:
-//                file.Write(wxT("\t[TEAM2]\n\t{\n\t\tStartPosX=") + tcTeam3X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam3Y->GetValue() + wxT(";\n\t}\n"));
-//            case 2:
-//                file.Write(wxT("\t[TEAM1]\n\t{\n\t\tStartPosX=") + tcTeam2X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam2Y->GetValue() + wxT(";\n\t}\n"));
-//                file.Write(wxT("\t[TEAM0]\n\t{\n\t\tStartPosX=") + tcTeam1X->GetValue() + wxT(";\n\t\tStartPosZ=") + tcTeam1Y->GetValue() + wxT(";\n\t}\n"));
-//        }
+        file.Write(wxT("\tDescription=") + smdTab->smdGeneralTab->tcDescription->GetValue() + wxT(";\n"));
+        file.Write(wxT("\tTidalStrength=") + smdTab->smdGeneralTab->tcTidalStrength->GetValue() + wxT(";\n"));
+        file.Write(wxT("\tGravity=") + smdTab->smdGeneralTab->tcGravity->GetValue() + wxT(";\n"));
+        file.Write(wxT("\tMaxMetal=") + smdTab->smdGeneralTab->tcMaxMetal->GetValue() + wxT(";\n"));
+        file.Write(wxT("\tExtractorRadius=") + smdTab->smdGeneralTab->tcExtractorRadius->GetValue() + wxT(";\n"));
+        file.Write(wxT("\tMapHardness=") + smdTab->smdGeneralTab->tcMapHardness->GetValue() + wxT(";\n"));
+        file.Write(wxT("\t[SMF]\n\t{\n"));
+            file.Write(wxT("\t\tminheight = ") + smdTab->smdGeneralTab->tcMinHeight->GetValue() + wxT(";\n"));
+            file.Write(wxT("\t\tmaxheight = ") + smdTab->smdGeneralTab->tcMaxHeight->GetValue() + wxT(";\n"));
+        file.Write(wxT("\t}\n\t[ATMOSPHERE]\n\t{\n"));
+            file.Write(wxT("\t\tFogColour=") + sFogRed + wxT(" ") + sFogGreen + wxT(" ") + sFogBlue + wxT(";\n"));
+            file.Write(wxT("\t\tFogStart=") + smdTab->smdAtmosphereTab->tcFogStart->GetValue() + wxT(";\n"));
+            file.Write(wxT("\t\tSunColour=") + sSunRed + wxT(" ") + sSunGreen + wxT(" ") + sSunBlue + wxT(";\n"));
+            file.Write(wxT("\t\tSkyColour=") + sSkyRed + wxT(" ") + sSkyGreen + wxT(" ") + sSkyBlue + wxT(";\n"));
+            file.Write(wxT("\t\tCloudColour=") + sCloudRed + wxT(" ") + sCloudGreen + wxT(" ") + sCloudBlue + wxT(";\n"));
+            file.Write(wxT("\t\tCloudDensity=") + smdTab->smdAtmosphereTab->tcCloudDensity->GetValue() + wxT(";\n"));
+            file.Write(wxT("\t\tMinWind=") + smdTab->smdGeneralTab->tcMinWind->GetValue() + wxT(";\n"));
+            file.Write(wxT("\t\tMaxWind=") + smdTab->smdGeneralTab->tcMaxWind->GetValue() + wxT(";\n"));
+        file.Write(wxT("\t}\n\t[LIGHT]\n\t{\n"));
+            file.Write(wxT("\t\tSunDir=1 2 0;\n"));
+//            file.Write(wxT("\t\tSunDir=") + tcSunDirX->GetValue() + wxT(" ") + tcSunDirY->GetValue() + wxT(" ") + tcSunDirZ->GetValue() + wxT(";\n"));
+            file.Write(wxT("\t\tGroundAmbientColour=") + sGroundAmbientRed + wxT(" ") + sGroundAmbientGreen + wxT(" ") + sGroundAmbientBlue + wxT(";\n"));
+            file.Write(wxT("\t\tGroundSunColour=") + sGroundSunRed + wxT(" ") + sGroundSunGreen + wxT(" ") + sGroundSunBlue + wxT(";\n"));
+            file.Write(wxT("\t\tGroundShadowDensity=") + smdTab->smdAtmosphereTab->tcGroundShadowDensity->GetValue() +wxT(";\n"));
+            file.Write(wxT("\t\tUnitAmbientColour=") + sUnitAmbientRed + wxT(" ") + sUnitAmbientGreen + wxT(" ") + sUnitAmbientBlue + wxT(";\n"));
+            file.Write(wxT("\t\tUnitSunColour=") + sUnitSunRed + wxT(" ") + sUnitSunGreen + wxT(" ") + sUnitSunBlue + wxT(";\n"));
+            file.Write(wxT("\t\tUnitShadowDensity=") + smdTab->smdAtmosphereTab->tcUnitShadowDensity->GetValue() +wxT(";\n"));
+        file.Write(wxT("\t}\n\t[WATER]\n\t{\n"));
+            file.Write(wxT("\t\tWaterBaseColour=") + sWaterBaseRed + wxT(" ") + sWaterBaseGreen + wxT(" ") + sWaterBaseBlue + wxT(";\n"));
+            file.Write(wxT("\t\tWaterMinColour=") + sWaterMinRed + wxT(" ") + sWaterMinGreen + wxT(" ") + sWaterMinBlue + wxT(";\n"));
+            file.Write(wxT("\t\tWaterAbsorbColour=") + sWaterAbsorbRed + wxT(" ") + sWaterAbsorbGreen + wxT(" ") + sWaterAbsorbBlue + wxT(";\n"));
+        file.Write(wxT("\t}\n"));
+        iTeamCount = wxAtoi(smdTab->smdGeneralTab->tcTeamCount->GetValue());
+        switch(iTeamCount){
+            case 8:
+                file.Write(wxT("\t[TEAM7]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam8X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam8Y->GetValue() + wxT(";\n\t}\n"));
+            case 7:
+                file.Write(wxT("\t[TEAM6]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam7X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam7Y->GetValue() + wxT(";\n\t}\n"));
+            case 6:
+                file.Write(wxT("\t[TEAM5]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam6X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam6Y->GetValue() + wxT(";\n\t}\n"));
+            case 5:
+                file.Write(wxT("\t[TEAM4]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam5X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam5Y->GetValue() + wxT(";\n\t}\n"));
+            case 4:
+                file.Write(wxT("\t[TEAM3]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam4X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam4Y->GetValue() + wxT(";\n\t}\n"));
+            case 3:
+                file.Write(wxT("\t[TEAM2]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam3X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam3Y->GetValue() + wxT(";\n\t}\n"));
+            case 2:
+                file.Write(wxT("\t[TEAM1]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam2X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam2Y->GetValue() + wxT(";\n\t}\n"));
+                file.Write(wxT("\t[TEAM0]\n\t{\n\t\tStartPosX=") + smdTab->smdGeneralTab->tcTeam1X->GetValue() + wxT(";\n\t\tStartPosZ=") + smdTab->smdGeneralTab->tcTeam1Y->GetValue() + wxT(";\n\t}\n"));
+        }
         file.Write(wxT("\n}"));
 
     file.Close();
 }
-
 
