@@ -18,7 +18,6 @@ class _smdTab : public wxPanel{
         void reset(void);
     private:
         wxNotebook *nbSMD;
-        wxButton *btnSMDSave;
 };
 
 #endif

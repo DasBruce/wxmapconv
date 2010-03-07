@@ -11,13 +11,8 @@ _smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id){
     nbSMD->AddPage(smdAtmosphereTab, wxT("Atmosphere"), true);
     nbSMD->AddPage(smdWaterTab, wxT("Water"), true);
 
-    btnSMDSave = new wxButton( this, IDBTN_SMD_SAVE, wxT("Save SMD"));
-    wxBoxSizer *hboxSMDSave = new wxBoxSizer(wxHORIZONTAL);
-    hboxSMDSave->Add(btnSMDSave, 0,0,0);
-
-    wxFlexGridSizer* box = new wxFlexGridSizer(2,1,0,0);       //create a sizer to expand the subnotebooks
-    box->Add( nbSMD, 1, wxEXPAND, 0 );
-    box->Add( hboxSMDSave, 0, wxEXPAND, 0);
+    wxFlexGridSizer* box = new wxFlexGridSizer(1,1,0,0);       //create a sizer to expand the subnotebooks
+    box->Add( nbSMD, 1, wxEXPAND, 1 );
 
     this->SetSizer( box );
     this->Layout();

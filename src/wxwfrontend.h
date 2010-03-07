@@ -32,7 +32,6 @@ class Frontend : public wxFrame{
 
         void SaveProject(void);
         void OpenSMD(void);
-        void SaveSMD(void);
 
         void LoadImage(int type);
 

@@ -1,15 +1,11 @@
 #include "wxwfrontend.h"
 
 Frontend::Frontend(const wxString& title)
-       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(600, 600))
-{
-
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(600, 580)){
     bSaved = false;
 
     image = new wxImage(300,300);
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//Menu bar//////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////
+
     menubar = new wxMenuBar;
     mnFile = new wxMenu;
     mnSMD = new wxMenu;
@@ -22,13 +18,14 @@ Frontend::Frontend(const wxString& title)
     mnFile->AppendSeparator();
     mnFile->Append(wxID_EXIT, wxT("&Quit"));
 
+    mnSMD->Append(IDMENU_SMDOPEN, wxT("&Open"));
+    mnSMD->Append(IDMENU_SMDSAVE, wxT("&Save"));
     mnSMD->Append(IDMENU_SMDRESET, wxT("&Reset"));
 
     menubar->Append(mnFile, wxT("&File"));
     menubar->Append(mnSMD, wxT("&SMD"));
 
     SetMenuBar(menubar);
-
 
     notebook = new wxNotebook(this, IDNB_MAIN);
     mapconvTab = new _mapconvTab(notebook, -1);
@@ -39,7 +36,6 @@ Frontend::Frontend(const wxString& title)
 	notebook->AddPage(previewTab, _("Preview"), true);
     notebook->AddPage(smdTab, wxT("SMD"), true);
 
-
 //Mouse//
     Connect(wxID_ANY, wxEVT_LEFT_DOWN, wxCommandEventHandler(Frontend::OnMouseEvent));
 //Menu Options//
@@ -47,6 +43,8 @@ Frontend::Frontend(const wxString& title)
     Connect(IDMENU_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProject));
     Connect(IDMENU_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickLoadProject));
 
+    //Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDOpen));
+    Connect(IDMENU_SMDSAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDSave));
     Connect(IDMENU_SMDRESET, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDReset));
 
     Connect(IDBTN_SMD_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnClickSMDSave));
@@ -93,10 +91,6 @@ void Frontend::OnClickSaveProjectAs(wxCommandEvent& event){
         SaveProject();
     }
     delete saveAsFileDialog;
-}
-
-void Frontend::OnClickSMDReset(wxCommandEvent& event){
-    smdTab->reset();
 }
 
 void Frontend::SaveProject(void)
@@ -691,12 +685,10 @@ void Frontend::OpenSMD(void)
 //    //bSaved = true;
 }
 
-void Frontend::OnClickSMDSave(wxCommandEvent& event)
-{
-    SaveSMD();
+void Frontend::OnClickSMDReset(wxCommandEvent& event){
+    smdTab->reset();
 }
-
-void Frontend::SaveSMD(void)
+void Frontend::OnClickSMDSave(wxCommandEvent& event)
 {
     wxString sBuffer;
     wxFile file;
