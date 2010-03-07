@@ -41,6 +41,7 @@ Frontend::Frontend(const wxString& title)
 //Menu Options//
     Connect(IDMENU_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickNew));
     Connect(IDMENU_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProject));
+    Connect(IDMENU_SAVEAS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProjectAs));
     Connect(IDMENU_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickLoadProject));
 
     //Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDOpen));
@@ -69,209 +70,208 @@ void Frontend::OnClickNew(wxCommandEvent& event){
 
 
 void Frontend::OnClickSaveProject(wxCommandEvent& event){
-    if(!bSaved)
-    {
-        wxFileDialog* saveAsFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
-        if (openFileDialog->ShowModal() == wxID_OK)
+    if(!bSaved){
+        wxFileDialog* SaveFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
+        if (SaveFileDialog->ShowModal() == wxID_OK)
         {
-            projectPath = openFileDialog->GetPath();
+            projectPath = SaveFileDialog->GetPath();
             SaveProject();
         }
-        delete saveAsFileDialog;
+        delete SaveFileDialog;
     }
     else
         SaveProject();
 }
 
 void Frontend::OnClickSaveProjectAs(wxCommandEvent& event){
-    wxFileDialog* saveAsFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
-    if (openFileDialog->ShowModal() == wxID_OK)
+    wxFileDialog* SaveFileDialog = new wxFileDialog(this, wxT("Save Project As..."), wxT(""), wxT(""), wxT("*.mprj"), wxFD_SAVE);
+    if (SaveFileDialog->ShowModal() == wxID_OK)
     {
-        projectPath = openFileDialog->GetPath();
+        projectPath = SaveFileDialog->GetPath();
         SaveProject();
     }
-    delete saveAsFileDialog;
+    delete SaveFileDialog;
 }
 
 void Frontend::SaveProject(void)
 {
-//    wxFile file;
-//
-//    file.Open(projectPath, wxFile::write);
-//
-//    file.Write(wxT("heightmap=") + tcHeight->GetValue() + wxT(";\n"));
-//    file.Write(wxT("texture=") + tcTexture->GetValue() + wxT(";\n"));
-//    file.Write(wxT("metal=") + tcMetal->GetValue() + wxT(";\n"));
-//    file.Write(wxT("enablefeaturemap="));
-//        if(cbFeatureEnable->GetValue()) file.Write(wxT("true;\n"));
-//        else                            file.Write(wxT("false;\n"));
-//    file.Write(wxT("featuremap=") + tcFeature->GetValue() + wxT(";\n"));
-//    file.Write(wxT("featurelist=") + tcFeatureList->GetValue() + wxT(";\n"));
-//    file.Write(wxT("enabletypemap="));
-//        if(cbTypeEnable->GetValue()) file.Write(wxT("true;\n"));
-//        else                         file.Write(wxT("false;\n"));
-//    file.Write(wxT("typemap=") + tcType->GetValue() + wxT(";\n"));
-//    file.Write(wxT("geovent=") + tcGeovent->GetValue() + wxT(";\n"));
-//    file.Write(wxT("additionaloptions=") + tcOtherOptions->GetValue() + wxT(";\n"));
-//    file.Write(wxT("output=") + tcOutput->GetValue() + wxT(";\n"));
-//    file.Write(wxT("maxheight=") + tcMax->GetValue() + wxT(";\n"));
-//    file.Write(wxT("minheight=") + tcMin->GetValue() + wxT(";\n"));
-//    file.Write(wxT("lowpass="));
-//        if(cbLowpass->GetValue()) file.Write(wxT("true;\n"));
-//        else                      file.Write(wxT("false;\n"));
-//    file.Write(wxT("invert="));
-//        if(cbInvert->GetValue()) file.Write(wxT("true;\n"));
-//        else                     file.Write(wxT("false;\n"));
-//    file.Write(wxT("quality=") + wxString::Format(wxT("%i"),rbxQuality->GetSelection()) + wxT(";\n"));
-//    file.Write(wxT("compression=") + tcCompression->GetValue() + wxT(";\n"));
-//    file.Write(wxT("rotatefeatures=") + tcFeatureRotate->GetValue() + wxT(";\n"));
-//    file.Write(wxT("heightmaploaded="));
-//        if(bHeightmapLoaded)    file.Write(wxT("true;\n"));
-//        else                    file.Write(wxT("false;\n"));
-//    file.Write(wxT("textureloaded="));
-//        if(bTextureLoaded) file.Write(wxT("true;\n"));
-//        else               file.Write(wxT("false;\n"));
-//    file.Write(wxT("metalloaded="));
-//        if(bMetalLoaded)   file.Write(wxT("true;\n"));
-//        else               file.Write(wxT("false;\n"));
-//    file.Write(wxT("featureloaded="));
-//        if(bFeatureLoaded) file.Write(wxT("true;\n"));
-//        else               file.Write(wxT("false;\n"));
-//    file.Write(wxT("typemaploaded="));
-//        if(bTypemapLoaded) file.Write(wxT("true;\n"));
-//        else               file.Write(wxT("false;\n"));
-//
-//    file.Close();
-//    bSaved = true;
+    wxFile file;
+
+    file.Open(projectPath, wxFile::write);
+
+    file.Write(wxT("heightmap=") + mapconvTab->tcHeight->GetValue() + wxT(";\n"));
+    file.Write(wxT("texture=") + mapconvTab->tcTexture->GetValue() + wxT(";\n"));
+    file.Write(wxT("metal=") + mapconvTab->tcMetal->GetValue() + wxT(";\n"));
+    file.Write(wxT("enablefeaturemap="));
+        if(mapconvTab->cbFeatureEnable->GetValue()) file.Write(wxT("true;\n"));
+        else                            file.Write(wxT("false;\n"));
+    file.Write(wxT("featuremap=") + mapconvTab->tcFeature->GetValue() + wxT(";\n"));
+    file.Write(wxT("featurelist=") + mapconvTab->tcFeatureList->GetValue() + wxT(";\n"));
+    file.Write(wxT("enabletypemap="));
+        if(mapconvTab->cbTypeEnable->GetValue()) file.Write(wxT("true;\n"));
+        else                         file.Write(wxT("false;\n"));
+    file.Write(wxT("typemap=") + mapconvTab->tcType->GetValue() + wxT(";\n"));
+    file.Write(wxT("geovent=") + mapconvTab->tcGeovent->GetValue() + wxT(";\n"));
+    file.Write(wxT("additionaloptions=") + mapconvTab->tcOtherOptions->GetValue() + wxT(";\n"));
+    file.Write(wxT("output=") + mapconvTab->tcOutput->GetValue() + wxT(";\n"));
+    file.Write(wxT("maxheight=") + mapconvTab->tcMax->GetValue() + wxT(";\n"));
+    file.Write(wxT("minheight=") + mapconvTab->tcMin->GetValue() + wxT(";\n"));
+    file.Write(wxT("lowpass="));
+        if(mapconvTab->cbLowpass->GetValue()) file.Write(wxT("true;\n"));
+        else                      file.Write(wxT("false;\n"));
+    file.Write(wxT("invert="));
+        if(mapconvTab->cbInvert->GetValue()) file.Write(wxT("true;\n"));
+        else                     file.Write(wxT("false;\n"));
+    file.Write(wxT("quality=") + wxString::Format(wxT("%i"),mapconvTab->rbxQuality->GetSelection()) + wxT(";\n"));
+    file.Write(wxT("compression=") + mapconvTab->tcCompression->GetValue() + wxT(";\n"));
+    file.Write(wxT("rotatefeatures=") + mapconvTab->tcFeatureRotate->GetValue() + wxT(";\n"));
+    file.Write(wxT("heightmaploaded="));
+        if(mapconvTab->bHeightmapLoaded)    file.Write(wxT("true;\n"));
+        else                    file.Write(wxT("false;\n"));
+    file.Write(wxT("textureloaded="));
+        if(mapconvTab->bTextureLoaded) file.Write(wxT("true;\n"));
+        else               file.Write(wxT("false;\n"));
+    file.Write(wxT("metalloaded="));
+        if(mapconvTab->bMetalLoaded)   file.Write(wxT("true;\n"));
+        else               file.Write(wxT("false;\n"));
+    file.Write(wxT("featureloaded="));
+        if(mapconvTab->bFeatureLoaded) file.Write(wxT("true;\n"));
+        else               file.Write(wxT("false;\n"));
+    file.Write(wxT("typemaploaded="));
+        if(mapconvTab->bTypemapLoaded) file.Write(wxT("true;\n"));
+        else               file.Write(wxT("false;\n"));
+
+    file.Close();
+    bSaved = true;
 }
 
 void Frontend::OnClickLoadProject(wxCommandEvent& event)
 {
-//    wxTextFile *file;
-//
-//    wxString str;
-//    wxString name;
-//    wxString value;
-//
-//    int start, length;
-//
-//    wxFileDialog *loadFileDialog = new wxFileDialog(this);
-//    if (openFileDialog->ShowModal() == wxID_OK)
-//    {
-//        file = new wxTextFile(openFileDialog->GetPath());
-//        if(file->Open())
-//        {
-//            for ( str = file->GetFirstLine(); !file->Eof(); str = file->GetNextLine() )
-//            {
-//                start = 0;
-//                length = str.Find(wxT("="));
-//                name = str.Mid(start, length);
-//
-//                start = str.Find(wxT("=")) + 1;
-//                length = str.Find(wxT(";")) - start;
-//                value = str.Mid(start, length);
-//
-//                if(name == wxT("heightmap"))
-//                    tcHeight->SetValue(value);
-//                else if(name == wxT("texture"))
-//                    tcTexture->SetValue(value);
-//                else if(name == wxT("metal"))
-//                    tcMetal->SetValue(value);
-//                else if(name == wxT("enablefeaturemap")){
-//                    if(value == wxT("true"))
-//                        cbFeatureEnable->SetValue(true);
-//                    else
-//                        cbFeatureEnable->SetValue(false);
-//                }
-//                else if(name == wxT("featuremap"))
-//                    tcFeature->SetValue(value);
-//                else if(name == wxT("featurelist"))
-//                    tcFeatureList->SetValue(value);
-//                else if(name == wxT("enabletypemap")){
-//                    if(value == wxT("true"))
-//                        cbTypeEnable->SetValue(true);
-//                    else
-//                        cbTypeEnable->SetValue(false);
-//                }
-//                else if(name == wxT("typemap"))
-//                    tcType->SetValue(value);
-//                else if(name == wxT("geovent"))
-//                    tcGeovent->SetValue(value);
-//                else if(name == wxT("additionaloptions"))
-//                    tcOtherOptions->SetValue(value);
-//                else if(name == wxT("output"))
-//                    tcOutput->SetValue(value);
-//                else if(name == wxT("maxheight"))
-//                    tcMax->SetValue(value);
-//                else if(name == wxT("minheight"))
-//                    tcMin->SetValue(value);
-//                else if(name == wxT("lowpass")){
-//                    if(value == wxT("true"))
-//                        cbLowpass->SetValue(true);
-//                    else
-//                        cbLowpass->SetValue(false);
-//                }
-//                else if(name == wxT("invert")){
-//                    if(value == wxT("true"))
-//                        cbInvert->SetValue(true);
-//                    else
-//                        cbInvert->SetValue(false);
-//                }
-//                else if(name == wxT("quality"))
-//                    rbxQuality->SetSelection(wxAtoi(value));
-//                else if(name == wxT("compression"))
-//                    tcCompression->SetValue(value);
-//                else if(name == wxT("rotatefeatures"))
-//                    tcFeatureRotate->SetValue(value);
-//                else if(name == wxT("heightmaploaded")){
-//                    if(value == wxT("true")){
-////                        bHeightmapLoaded=true;
-//                        path = tcHeight->GetValue();
-//                        LoadImage(ID_HEIGHT);
-//                    }
-////                    else    bHeightmapLoaded=false;
-//                }
-//                else if(name == wxT("textureloaded")){
-//                    if(value == wxT("true")){
-////                        bTextureLoaded=true;
-//                        path = tcTexture->GetValue();
-//                        LoadImage(ID_TEXTURE);
-//                    }
-////                    else    bTextureLoaded=false;
-//                }
-//                else if(name == wxT("metalloaded")){
-//                    if(value == wxT("true")){
-////                        bMetalLoaded=true;
-//                        path = tcMetal->GetValue();
-//                        LoadImage(ID_METAL);
-//                    }
-////                    else    bMetalLoaded=false;
-//                }
-//                else if(name == wxT("featureloaded")){
-//                    if(value == wxT("true")){
-////                        bFeatureLoaded=true;
-//                        path = tcFeature->GetValue();
-//                        LoadImage(ID_FEATURE);
-//                    }
-////                    else    bFeatureLoaded=false;
-//                }
-//
-//                else if(name == wxT("typemaploaded")){
-//                    if(value == wxT("true")){
-////                        bTypemapLoaded=true;
-//                        path = tcType->GetValue();
-//                        LoadImage(ID_TYPE);
-//                    }
-////                    else    bTypemapLoaded=false;
-//                }
-//                else{}//error value not found
-//            }
-//
-//            file->Close();
-//        }
-//    }
-//    delete loadFileDialog;
-//    bSaved = true;
+    wxTextFile *file;
+
+    wxString str;
+    wxString name;
+    wxString value;
+
+    int start, length;
+
+    wxFileDialog *loadFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        file = new wxTextFile(openFileDialog->GetPath());
+        if(file->Open())
+        {
+            for ( str = file->GetFirstLine(); !file->Eof(); str = file->GetNextLine() )
+            {
+                start = 0;
+                length = str.Find(wxT("="));
+                name = str.Mid(start, length);
+
+                start = str.Find(wxT("=")) + 1;
+                length = str.Find(wxT(";")) - start;
+                value = str.Mid(start, length);
+
+                if(name == wxT("heightmap"))
+                    mapconvTab->tcHeight->SetValue(value);
+                else if(name == wxT("texture"))
+                    mapconvTab->tcTexture->SetValue(value);
+                else if(name == wxT("metal"))
+                    mapconvTab->tcMetal->SetValue(value);
+                else if(name == wxT("enablefeaturemap")){
+                    if(value == wxT("true"))
+                        mapconvTab->cbFeatureEnable->SetValue(true);
+                    else
+                        mapconvTab->cbFeatureEnable->SetValue(false);
+                }
+                else if(name == wxT("featuremap"))
+                    mapconvTab->tcFeature->SetValue(value);
+                else if(name == wxT("featurelist"))
+                    mapconvTab->tcFeatureList->SetValue(value);
+                else if(name == wxT("enabletypemap")){
+                    if(value == wxT("true"))
+                        mapconvTab->cbTypeEnable->SetValue(true);
+                    else
+                        mapconvTab->cbTypeEnable->SetValue(false);
+                }
+                else if(name == wxT("typemap"))
+                    mapconvTab->tcType->SetValue(value);
+                else if(name == wxT("geovent"))
+                    mapconvTab->tcGeovent->SetValue(value);
+                else if(name == wxT("additionaloptions"))
+                    mapconvTab->tcOtherOptions->SetValue(value);
+                else if(name == wxT("output"))
+                    mapconvTab->tcOutput->SetValue(value);
+                else if(name == wxT("maxheight"))
+                    mapconvTab->tcMax->SetValue(value);
+                else if(name == wxT("minheight"))
+                    mapconvTab->tcMin->SetValue(value);
+                else if(name == wxT("lowpass")){
+                    if(value == wxT("true"))
+                        mapconvTab->cbLowpass->SetValue(true);
+                    else
+                        mapconvTab->cbLowpass->SetValue(false);
+                }
+                else if(name == wxT("invert")){
+                    if(value == wxT("true"))
+                        mapconvTab->cbInvert->SetValue(true);
+                    else
+                        mapconvTab->cbInvert->SetValue(false);
+                }
+                else if(name == wxT("quality"))
+                    mapconvTab->rbxQuality->SetSelection(wxAtoi(value));
+                else if(name == wxT("compression"))
+                    mapconvTab->tcCompression->SetValue(value);
+                else if(name == wxT("rotatefeatures"))
+                    mapconvTab->tcFeatureRotate->SetValue(value);
+                else if(name == wxT("heightmaploaded")){
+                    if(value == wxT("true")){
+//                        bHeightmapLoaded=true;
+                        path = mapconvTab->tcHeight->GetValue();
+                        LoadImage(ID_HEIGHT);
+                    }
+//                    else    bHeightmapLoaded=false;
+                }
+                else if(name == wxT("textureloaded")){
+                    if(value == wxT("true")){
+//                        bTextureLoaded=true;
+                        path = mapconvTab->tcTexture->GetValue();
+                        LoadImage(ID_TEXTURE);
+                    }
+//                    else    bTextureLoaded=false;
+                }
+                else if(name == wxT("metalloaded")){
+                    if(value == wxT("true")){
+//                        bMetalLoaded=true;
+                        path = mapconvTab->tcMetal->GetValue();
+                        LoadImage(ID_METAL);
+                    }
+//                    else    bMetalLoaded=false;
+                }
+                else if(name == wxT("featureloaded")){
+                    if(value == wxT("true")){
+//                        bFeatureLoaded=true;
+                        path = mapconvTab->tcFeature->GetValue();
+                        LoadImage(ID_FEATURE);
+                    }
+//                    else    bFeatureLoaded=false;
+                }
+
+                else if(name == wxT("typemaploaded")){
+                    if(value == wxT("true")){
+//                        bTypemapLoaded=true;
+                        path = mapconvTab->tcType->GetValue();
+                        LoadImage(ID_TYPE);
+                    }
+//                    else    bTypemapLoaded=false;
+                }
+                else{}//error value not found
+            }
+
+            file->Close();
+        }
+    }
+    delete loadFileDialog;
+    //bSaved = true;
 }
 
 

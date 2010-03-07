@@ -5,6 +5,36 @@
 class _mapconvTab : public wxPanel{
     public:
         _mapconvTab(wxWindow* parent, wxWindowID id);
+
+        wxTextCtrl *tcHeight;
+        wxTextCtrl *tcTexture;
+        wxTextCtrl *tcMetal;
+        wxCheckBox *cbFeatureEnable;
+        wxTextCtrl *tcFeature;
+        wxTextCtrl *tcFeatureList;
+        wxCheckBox *cbTypeEnable;
+        wxTextCtrl *tcType;
+        wxTextCtrl *tcGeovent;
+        wxCheckBox *cbOtherOptionsEnable;
+        wxTextCtrl *tcOtherOptions;
+        wxTextCtrl *tcOutput;
+        wxTextCtrl *tcMax;
+        wxTextCtrl *tcMin;
+
+        wxCheckBox *cbLowpass;
+        wxCheckBox *cbInvert;
+
+        wxTextCtrl *tcCompression;
+        wxTextCtrl *tcFeatureRotate;
+
+        wxRadioBox *rbxQuality;
+
+        bool bTextureLoaded;
+        bool bHeightmapLoaded;
+        bool bMetalLoaded;
+        bool bFeatureLoaded;
+        bool bTypemapLoaded;
+
     private:
         bool bLowpass;
         bool bInvert;
@@ -13,54 +43,28 @@ class _mapconvTab : public wxPanel{
         bool bOtherEnable;
         bool bOtherFirstTime;
 
-        bool bTextureLoaded;
-        bool bHeightmapLoaded;
-        bool bMetalLoaded;
-        bool bFeatureLoaded;
-        bool bTypemapLoaded;
-
         wxString path;
         wxFileDialog *openFileDialog;
         wxButton *btnHeight;
-        wxTextCtrl *tcHeight;
         wxButton *btnTexture;
-        wxTextCtrl *tcTexture;
         wxButton *btnMetal;
-        wxTextCtrl *tcMetal;
-        wxCheckBox *cbFeatureEnable;
         wxButton *btnFeature;
-        wxTextCtrl *tcFeature;
         wxButton *btnFeatureList;
-        wxTextCtrl *tcFeatureList;
-        wxCheckBox *cbTypeEnable;
         wxButton *btnType;
-        wxTextCtrl *tcType;
         wxButton *btnGeovent;
-        wxTextCtrl *tcGeovent;
-        wxCheckBox *cbOtherOptionsEnable;
-        wxTextCtrl *tcOtherOptions;
         wxButton *btnOutput;
-        wxTextCtrl *tcOutput;
+        wxButton *btnCompile;
 
         wxBoxSizer *hboxMax;
         wxBoxSizer *hboxMin;
-        wxTextCtrl *tcMax;
-        wxTextCtrl *tcMin;
         wxStaticText *stMax;
         wxStaticText *stMin;
-        wxCheckBox *cbLowpass;
-        wxCheckBox *cbInvert;
 
-        wxTextCtrl *tcCompression;
         wxStaticText *stCompression;
-        wxTextCtrl *tcFeatureRotate;
         wxStaticText *stFeatureRotate;
-
-        wxRadioBox *rbxQuality;
 
         wxStaticBitmap *sbmPreview;
 
-        wxButton *btnCompile;
 
         void reset(void);
 
