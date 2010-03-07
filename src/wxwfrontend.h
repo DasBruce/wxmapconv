@@ -9,7 +9,6 @@ class Frontend : public wxFrame{
     private:
         bool bSaved;
 
-        wxFileDialog *openFileDialog;
         wxString sProjectName;
         wxString path;
         wxString projectPath;

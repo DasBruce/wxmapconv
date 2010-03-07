@@ -155,10 +155,10 @@ void Frontend::OnClickLoadProject(wxCommandEvent& event)
 
     int start, length;
 
-    wxFileDialog *loadFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
+    wxFileDialog *LoadFileDialog = new wxFileDialog(this);
+    if (LoadFileDialog->ShowModal() == wxID_OK)
     {
-        file = new wxTextFile(openFileDialog->GetPath());
+        file = new wxTextFile(LoadFileDialog->GetPath());
         if(file->Open())
         {
             for ( str = file->GetFirstLine(); !file->Eof(); str = file->GetNextLine() )
@@ -225,44 +225,44 @@ void Frontend::OnClickLoadProject(wxCommandEvent& event)
                     mapconvTab->tcFeatureRotate->SetValue(value);
                 else if(name == wxT("heightmaploaded")){
                     if(value == wxT("true")){
-//                        bHeightmapLoaded=true;
+                        mapconvTab->bHeightmapLoaded=true;
                         path = mapconvTab->tcHeight->GetValue();
                         LoadImage(ID_HEIGHT);
                     }
-//                    else    bHeightmapLoaded=false;
+                    else    mapconvTab->bHeightmapLoaded=false;
                 }
                 else if(name == wxT("textureloaded")){
                     if(value == wxT("true")){
-//                        bTextureLoaded=true;
+                        mapconvTab->bTextureLoaded=true;
                         path = mapconvTab->tcTexture->GetValue();
                         LoadImage(ID_TEXTURE);
                     }
-//                    else    bTextureLoaded=false;
+                    else    mapconvTab->bTextureLoaded=false;
                 }
                 else if(name == wxT("metalloaded")){
                     if(value == wxT("true")){
-//                        bMetalLoaded=true;
+                        mapconvTab->bMetalLoaded=true;
                         path = mapconvTab->tcMetal->GetValue();
                         LoadImage(ID_METAL);
                     }
-//                    else    bMetalLoaded=false;
+                    else    mapconvTab->bMetalLoaded=false;
                 }
                 else if(name == wxT("featureloaded")){
                     if(value == wxT("true")){
-//                        bFeatureLoaded=true;
+                        mapconvTab->bFeatureLoaded=true;
                         path = mapconvTab->tcFeature->GetValue();
                         LoadImage(ID_FEATURE);
                     }
-//                    else    bFeatureLoaded=false;
+                    else    mapconvTab->bFeatureLoaded=false;
                 }
 
                 else if(name == wxT("typemaploaded")){
                     if(value == wxT("true")){
-//                        bTypemapLoaded=true;
+                        mapconvTab->bTypemapLoaded=true;
                         path = mapconvTab->tcType->GetValue();
                         LoadImage(ID_TYPE);
                     }
-//                    else    bTypemapLoaded=false;
+                    else    mapconvTab->bTypemapLoaded=false;
                 }
                 else{}//error value not found
             }
@@ -270,7 +270,7 @@ void Frontend::OnClickLoadProject(wxCommandEvent& event)
             file->Close();
         }
     }
-    delete loadFileDialog;
+    delete LoadFileDialog;
     //bSaved = true;
 }
 
