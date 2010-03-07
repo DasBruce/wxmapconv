@@ -9,6 +9,7 @@ Frontend::Frontend(const wxString& title)
     menubar = new wxMenuBar;
     mnFile = new wxMenu;
     mnSMD = new wxMenu;
+    mnMapconv = new wxMenu;
     mnAbout = new wxMenu;
 
     mnFile->Append(IDMENU_NEW, wxT("&New"));
@@ -18,11 +19,14 @@ Frontend::Frontend(const wxString& title)
     mnFile->AppendSeparator();
     mnFile->Append(wxID_EXIT, wxT("&Quit"));
 
+    mnMapconv->Append(IDMENU_COMPILE, wxT("&Compile"));
+
     mnSMD->Append(IDMENU_SMDOPEN, wxT("&Open"));
     mnSMD->Append(IDMENU_SMDSAVE, wxT("&Save"));
     mnSMD->Append(IDMENU_SMDRESET, wxT("&Reset"));
 
     menubar->Append(mnFile, wxT("&File"));
+    menubar->Append(mnMapconv, wxT("&Mapconv"));
     menubar->Append(mnSMD, wxT("&SMD"));
 
     SetMenuBar(menubar);
@@ -44,11 +48,13 @@ Frontend::Frontend(const wxString& title)
     Connect(IDMENU_SAVEAS, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProjectAs));
     Connect(IDMENU_OPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickLoadProject));
 
-    //Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDOpen));
-    Connect(IDMENU_SMDSAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDSave));
-    Connect(IDMENU_SMDRESET, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDReset));
+    Connect(IDMENU_COMPILE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickCompile));
 
-    Connect(IDBTN_SMD_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnClickSMDSave));
+    //Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDOpen));
+    Connect(IDMENU_SMDSAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveSMD));
+    Connect(IDMENU_SMDRESET, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickResetSMD));
+
+    Connect(IDBTN_SMD_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnClickSaveSMD));
 
     Centre();
 }
@@ -274,9 +280,11 @@ void Frontend::OnClickLoadProject(wxCommandEvent& event)
     //bSaved = true;
 }
 
+void Frontend::OnClickCompile(wxCommandEvent& event){
+    mapconvTab->Compile();
+}
 
-void Frontend::LoadImage(int type)
-{
+void Frontend::LoadImage(int type){
     int scale;
     image = new wxImage;
 
@@ -685,10 +693,10 @@ void Frontend::OpenSMD(void)
 //    //bSaved = true;
 }
 
-void Frontend::OnClickSMDReset(wxCommandEvent& event){
+void Frontend::OnClickResetSMD(wxCommandEvent& event){
     smdTab->reset();
 }
-void Frontend::OnClickSMDSave(wxCommandEvent& event)
+void Frontend::OnClickSaveSMD(wxCommandEvent& event)
 {
     wxString sBuffer;
     wxFile file;

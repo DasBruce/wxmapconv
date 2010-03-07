@@ -5,6 +5,7 @@
 class _mapconvTab : public wxPanel{
     public:
         _mapconvTab(wxWindow* parent, wxWindowID id);
+        void Compile(void);
 
         wxTextCtrl *tcHeight;
         wxTextCtrl *tcTexture;
@@ -53,7 +54,6 @@ class _mapconvTab : public wxPanel{
         wxButton *btnType;
         wxButton *btnGeovent;
         wxButton *btnOutput;
-        wxButton *btnCompile;
 
         wxBoxSizer *hboxMax;
         wxBoxSizer *hboxMin;
@@ -83,7 +83,6 @@ class _mapconvTab : public wxPanel{
         void OnToggleTypemapEnable(wxCommandEvent& event);
         void OnToggleOtherEnable(wxCommandEvent& event);
 
-        void OnClickCompile(wxCommandEvent& event);
 };
 #endif
 

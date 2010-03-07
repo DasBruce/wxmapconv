@@ -69,10 +69,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     tcOtherOptions = new wxTextCtrl(this, IDST_OTHER, wxT("Additional Options"));
     tcOtherOptions->Enable(bOtherEnable);
 
-    wxBoxSizer *hboxMainButtons = new wxBoxSizer(wxHORIZONTAL);
-    btnCompile = new wxButton(this, IDBTN_COMPILE, wxT("Compile"));
-
-
 //Vertical box for the heightmap options and quality controls/////////////////////////////////////////////////////////////////
     wxBoxSizer *vboxOptions = new wxBoxSizer(wxVERTICAL);
     wxStaticBoxSizer *gboxHeightOptions = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Heightmap Options"));
@@ -133,7 +129,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
         vboxOtherOptions->Add(-1, 15);
         vboxOtherOptions->Add(tcOtherOptions, 1, wxLEFT | wxRIGHT, 8);
     hboxOtherOptions->Add(vboxOtherOptions, 1, wxLEFT | wxRIGHT, 8);
-    hboxMainButtons->Add(btnCompile, 0, wxLEFT | wxRIGHT, 8);
 
     gboxFiles->Add(hboxHeight, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
     gboxFiles->Add(hboxTexture, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
@@ -147,8 +142,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     gboxFiles->Add(hboxOutput, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
     gboxFiles->Add(hboxOtherOptions, 0, wxEXPAND | wxLEFT | wxRIGHT, 5);
-    gboxFiles->Add(-1, 15);
-    gboxFiles->Add(hboxMainButtons, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 //Assemble Heightmap options////////////////////////////////////////////////////////////////////////
         fgHeightOptions->Add(stMax, 1, wxEXPAND | wxRIGHT | wxLEFT , 5);
         fgHeightOptions->Add(tcMax, 1, wxEXPAND | wxRIGHT | wxLEFT , 5);
@@ -197,9 +190,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     Connect(IDBTN_TYPE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenType));
     Connect(IDBTN_GEOVENT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenGeovent));
     Connect(IDBTN_OUTPUT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenOutput));
-//Buttons//
-    Connect(IDBTN_COMPILE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnClickCompile));
-
 }
 
 void _mapconvTab::OnOpenHeight(wxCommandEvent& event)
@@ -288,7 +278,7 @@ void _mapconvTab::OnOpenOutput(wxCommandEvent& event)
     }
 }
 
-void _mapconvTab::OnClickCompile(wxCommandEvent& event)
+void _mapconvTab::Compile(void)
 {
     wxString command;
     command.append(wxT("MapConv"));
