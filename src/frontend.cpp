@@ -40,8 +40,6 @@ Frontend::Frontend(const wxString& title)
 	notebook->AddPage(previewTab, _("Preview"), true);
     notebook->AddPage(smdTab, wxT("SMD"), true);
 
-//Mouse//
-    Connect(wxID_ANY, wxEVT_LEFT_DOWN, wxCommandEventHandler(Frontend::OnMouseEvent));
 //Menu Options//
     Connect(IDMENU_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickNew));
     Connect(IDMENU_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProject));
@@ -50,7 +48,7 @@ Frontend::Frontend(const wxString& title)
 
     Connect(IDMENU_COMPILE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickCompile));
 
-    //Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSMDOpen));
+    Connect(IDMENU_SMDOPEN, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickOpenSMD));
     Connect(IDMENU_SMDSAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveSMD));
     Connect(IDMENU_SMDRESET, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickResetSMD));
 
@@ -98,6 +96,7 @@ void Frontend::OnClickSaveProjectAs(wxCommandEvent& event){
     }
     delete SaveFileDialog;
 }
+
 
 void Frontend::SaveProject(void)
 {
@@ -284,413 +283,375 @@ void Frontend::OnClickCompile(wxCommandEvent& event){
     mapconvTab->Compile();
 }
 
-void Frontend::LoadImage(int type){
-    int scale;
-    image = new wxImage;
-
-    path.MakeLower();
-    if(path.find(wxT(".bmp"), 0)!=wxNOT_FOUND){
-        image->LoadFile(path, wxBITMAP_TYPE_BMP, -1);
-    }
-    else if(path.find(wxT(".jpg"), 0)!=wxNOT_FOUND || path.find(wxT(".jpeg"), 0)!=wxNOT_FOUND){
-        image->LoadFile(path, wxBITMAP_TYPE_JPEG, -1);
-    }
-    else if(path.find(wxT(".png"), 0)!=wxNOT_FOUND){
-        image->LoadFile(path, wxBITMAP_TYPE_PNG, -1);
-    }
-    else if(path.find(wxT(".tga"), 0)!=wxNOT_FOUND){
-        image->LoadFile(path, wxBITMAP_TYPE_TGA, -1);
-    }
-    else{
-        //error not a supported file type
-    }
-
-    int width = image->GetWidth();
-    int height = image->GetHeight();
-
-    if(width > height){
-        scale=width/height;
-        image->Rescale(440, 440/scale, wxIMAGE_QUALITY_HIGH);
-    }
-    else if(height > width){
-        scale=height/width;
-        image->Rescale(440/scale, 440, wxIMAGE_QUALITY_HIGH);
-    }
-    else{
-        image->Rescale(440, 440, wxIMAGE_QUALITY_HIGH);
-        scale=1;
-    }
-
-    previewTab->LoadPreviewImage(type, image);
-//    if(type == ID_TEXTURE){
-//        image->Rescale(128, 128, wxIMAGE_QUALITY_HIGH);
-//        sbmPreview->SetBitmap(wxBitmap(*image, -1));
-//    }
-
-    delete image;
-}
-
-void Frontend::OnMouseEvent(wxCommandEvent& event)
+void Frontend::OnClickOpenSMD(wxCommandEvent& event)
 {
-//    wxRect rectSunDir = pnlSunDirection->GetRect();
-//    if(rectSunDir.Contains(event.m_x, event.m_y))
-//        tcHeight->SetValue(wxT("contained"));
-}
+    wxString str;
+    wxString name;
+    wxString value;
+    int start, length;
 
-void Frontend::OpenSMD(void)
-{
-//    wxString str;
-//    wxString name;
-//    wxString value;
-//    int start, length;
-//
-//    wxTextFile *file;
-//    wxFileDialog *loadSMDDialog = new wxFileDialog(this);
-//
-//    if (loadSMDDialog->ShowModal() == wxID_OK)
-//    {
-//        file = new wxTextFile(loadSMDDialog->GetPath());
-//
-//        for (str = file->GetFirstLine(); !file->Eof(); str = file->GetNextLine())
-//        {
-//            int startPosID = -1;
-//            str.MakeLower();
-//
-//            if(str.Contains(wxT("[")) && str.Contains(wxT("]")))
-//            {
-//                str = str.After('[');
-//                str = str.Before(']');
-//                if(str == wxT("team0"))
-//                    startPosID = 0;
-//                else if(str == wxT("team1"))
-//                    startPosID = 1;
-//                else if(str == wxT("team2"))
-//                    startPosID = 2;
-//                else if(str == wxT("team3"))
-//                    startPosID = 3;
-//                else if(str == wxT("team4"))
-//                    startPosID = 4;
-//                else if(str == wxT("team5"))
-//                    startPosID = 5;
-//                else if(str == wxT("team6"))
-//                    startPosID = 6;
-//                else if(str == wxT("team7"))
-//                    startPosID = 7;
-//
-//            }
-//            if(str.Contains(wxT("=")))
-//            {
-//				//!TODO
-////                str = str.After(RXwhite);
-////                str = str.Before(RXwhite);
-//                start = 0;
-//                length = str.Find(wxT("="));
-//                name = str.Mid(start, length);
-//
-//                start = str.Find(wxT("=")) + 1;
-//                length = str.Find(wxT(";")) - start;
-//                value = str.Mid(start, length);
-////
-////                if(name == wxT("description"))
-////                    tcDescription->SetValue(value);
-////                else if(name == wxT("tidalstrenght"))
-////                    tcTidalStrength->SetValue(value);
-////                else if(name == wxT("gravity"))
-////                    tcGravity->SetValue(value);
-////                else if(name == wxT("maxmetal"))
-////                    tcMaxMetal->SetValue(value);
-////                else if(name == wxT("extractorradius"))
-////                    tcExtractorRadius->SetValue(value);
-////                else if(name == wxT("maphardness"))
-////                    tcMapHardness->SetValue(value);
-////                else if(name == wxT("maxheight"))
-////                    tcMaxHeight->SetValue(value);
-////                else if(name == wxT("minheight"))
-////                    tcMinHeight->SetValue(value);
-////                else
-//                if(name == wxT("fogcolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colFog->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlFogColourDisplay->SetBackgroundColour(*colFog);
-//                }
-//                else if(name == wxT("fogstart"))
-//                    tcFogStart->SetValue(value);
-//                else if(name == wxT("suncolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlSunColourDisplay->SetBackgroundColour(*colSun);
-//                }
-//                else if(name == wxT("skycolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colSky->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlSkyColourDisplay->SetBackgroundColour(*colSky);
-//                }
-//                else if(name == wxT("cloudcolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colCloud->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlCloudColourDisplay->SetBackgroundColour(*colCloud);
-//                }
-//                else if(name == wxT("clouddensity"))
-//                    tcCloudDensity->SetValue(value);
-//                else if(name == wxT("minwind"))
-//                    tcMinWind->SetValue(value);
-//                else if(name == wxT("maxwind"))
-//                    tcMaxWind->SetValue(value);
-//                else if(name == wxT("sundir"))
-//                {
-//                    int subLength;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    tcSunDirX->SetValue( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    tcSunDirY->SetValue( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    tcSunDirZ->SetValue( value );
-//                }
-//                else if(name == wxT("groundambientcolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colGroundAmbient->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlGroundAmbientColourDisplay->SetBackgroundColour(*colGroundAmbient);
-//                }
-//                else if(name == wxT("groundsuncolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colGroundSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlGroundSunColourDisplay->SetBackgroundColour(*colGroundSun);
-//                }
-//                else if(name == wxT("groundshadowdensity"))
-//                    tcUnitShadowDensity->SetValue(value);
-//                else if(name == wxT("unitambientcolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colUnitAmbient->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlUnitAmbientColourDisplay->SetBackgroundColour(*colUnitAmbient);
-//                }
-//                else if(name == wxT("unitsuncolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colUnitSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlUnitSunColourDisplay->SetBackgroundColour(*colUnitSun);
-//                }
-//                else if(name == wxT("unitshadowdensity"))
-//                    tcUnitShadowDensity->SetValue(value);
-//                else if(name == wxT("waterbasecolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colWaterBase->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlWaterBaseColourDisplay->SetBackgroundColour(*colWaterBase);
-//                }
-//                else if(name == wxT("watermincolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colWaterMin->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlWaterMinColourDisplay->SetBackgroundColour(*colWaterMin);
-//                }
-//                else if(name == wxT("waterabsorbcolor"))
-//                {
-//                    int subLength;
-//                    float red, green, blue;
-//
-//                    subLength = value.Find(wxT(" "));
-//                    red = wxAtof( value.Mid( 0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    subLength = value.Find(wxT(" "));
-//                    green = wxAtof( value.Mid(0, subLength));
-//                    value = value.Mid( subLength+1, value.Length());
-//
-//                    blue = wxAtof( value );
-//                    colWaterAbsorb->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
-//                    pnlWaterAbsorbColourDisplay->SetBackgroundColour(*colWaterAbsorb);
-//                }
-////                else if(name == wxT("startposx"))
-////                {
-////                    switch(startPosID)
-////                    {
-////                        case 0:
-////                            tcTeam1X->SetValue(value);
-////                            break;
-////                        case 1:
-////                            tcTeam2X->SetValue(value);
-////                            break;
-////                        case 2:
-////                            tcTeam3X->SetValue(value);
-////                            break;
-////                        case 3:
-////                            tcTeam4X->SetValue(value);
-////                            break;
-////                        case 4:
-////                            tcTeam5X->SetValue(value);
-////                            break;
-////                        case 5:
-////                            tcTeam6X->SetValue(value);
-////                            break;
-////                        case 6:
-////                            tcTeam7X->SetValue(value);
-////                            break;
-////                        case 7:
-////                            tcTeam8X->SetValue(value);
-////                            break;
-////                        default:
-////                            break;
-////                    }
-////                }
-//                else if(name == wxT("startposz"))
-//                {
-//                    switch(startPosID)
-//                    {
-//                        case 0:
-//                            tcTeam1Y->SetValue(value);
-//                            break;
-//                        case 1:
-//                            tcTeam2Y->SetValue(value);
-//                            break;
-//                        case 2:
-//                            tcTeam3Y->SetValue(value);
-//                            break;
-//                        case 3:
-//                            tcTeam4Y->SetValue(value);
-//                            break;
-//                        case 4:
-//                            tcTeam5Y->SetValue(value);
-//                            break;
-//                        case 5:
-//                            tcTeam6Y->SetValue(value);
-//                            break;
-//                        case 6:
-//                            tcTeam7Y->SetValue(value);
-//                            break;
-//                        case 7:
-//                            tcTeam8Y->SetValue(value);
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                }
-//            }
-//        }
-//        file->Close();
-//    }
-//    delete loadSMDDialog;
-//    //bSaved = true;
+    wxTextFile *file;
+    wxFileDialog *loadSMDDialog = new wxFileDialog(this);
+
+    if (loadSMDDialog->ShowModal() == wxID_OK)
+    {
+        file = new wxTextFile(loadSMDDialog->GetPath());
+        if(file->Open())
+        {
+            for ( str = file->GetFirstLine(); !file->Eof(); str = file->GetNextLine() )
+            {
+                int startPosID = -1;
+                str.MakeLower();
+
+                if(str.Contains(wxT("[")) && str.Contains(wxT("]")))//team is the only important name between [], others seem to be for ease of reading
+                {
+                    str = str.After('[');
+                    str = str.Before(']');
+                    if(str == wxT("team0"))
+                        startPosID = 0;
+                    else if(str == wxT("team1"))
+                        startPosID = 1;
+                    else if(str == wxT("team2"))
+                        startPosID = 2;
+                    else if(str == wxT("team3"))
+                        startPosID = 3;
+                    else if(str == wxT("team4"))
+                        startPosID = 4;
+                    else if(str == wxT("team5"))
+                        startPosID = 5;
+                    else if(str == wxT("team6"))
+                        startPosID = 6;
+                    else if(str == wxT("team7"))
+                        startPosID = 7;
+
+                }
+                if(str.Contains(wxT("=")))
+                {
+                    //!TODO
+                    str.Trim(false);
+                    str.Trim(true);
+
+                    start = 0;
+                    length = str.Find(wxT("="));
+                    name = str.Mid(start, length);
+                    name.Trim(true);
+
+                    start = str.Find(wxT("=")) + 1;
+                    length = str.Find(wxT(";")) - start;
+                    value = str.Mid(start, length);
+                    value.Trim(false);
+
+                    if(name == wxT("description"))
+                        smdTab->smdGeneralTab->tcDescription->SetValue(value);
+                    else if(name == wxT("tidalstrength"))
+                        smdTab->smdGeneralTab->tcTidalStrength->SetValue(value);
+                    else if(name == wxT("gravity"))
+                        smdTab->smdGeneralTab->tcGravity->SetValue(value);
+                    else if(name == wxT("maxmetal"))
+                        smdTab->smdGeneralTab->tcMaxMetal->SetValue(value);
+                    else if(name == wxT("extractorradius"))
+                        smdTab->smdGeneralTab->tcExtractorRadius->SetValue(value);
+                    else if(name == wxT("maphardness"))
+                        smdTab->smdGeneralTab->tcMapHardness->SetValue(value);
+                    else if(name == wxT("maxheight"))
+                        smdTab->smdGeneralTab->tcMaxHeight->SetValue(value);
+                    else if(name == wxT("minheight"))
+                        smdTab->smdGeneralTab->tcMinHeight->SetValue(value);
+                    else if(name == wxT("minwind"))
+                        smdTab->smdGeneralTab->tcMinWind->SetValue(value);
+                    else if(name == wxT("maxwind"))
+                        smdTab->smdGeneralTab->tcMaxWind->SetValue(value);
+                    else if(name == wxT("fogcolor") || name == wxT("fogcolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colFog->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlFogColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colFog);
+                        smdTab->smdAtmosphereTab->pnlFogColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("fogstart"))
+                        smdTab->smdAtmosphereTab->tcFogStart->SetValue(value);
+                    else if(name == wxT("suncolor") || name == wxT("suncolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlSunColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colSun);
+                        smdTab->smdAtmosphereTab->pnlSunColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("skycolor") || name == wxT("skycolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colSky->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlSkyColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colSky);
+                        smdTab->smdAtmosphereTab->pnlSkyColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("cloudcolor") || name == wxT("cloudcolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colCloud->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlCloudColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colCloud);
+                        smdTab->smdAtmosphereTab->pnlCloudColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("clouddensity"))
+                        smdTab->smdAtmosphereTab->tcCloudDensity->SetValue(value);
+                    else if(name == wxT("groundambientcolor") || name == wxT("groundambientcolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colGroundAmbient->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlGroundAmbientColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colGroundAmbient);
+                        smdTab->smdAtmosphereTab->pnlGroundAmbientColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("groundsuncolor") || name == wxT("groundsuncolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colGroundSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlGroundSunColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colGroundSun);
+                        smdTab->smdAtmosphereTab->pnlGroundSunColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("groundshadowdensity"))
+                        smdTab->smdAtmosphereTab->tcUnitShadowDensity->SetValue(value);
+                    else if(name == wxT("unitambientcolor") || name == wxT("unitambientcolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colUnitAmbient->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlUnitAmbientColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colUnitAmbient);
+                        smdTab->smdAtmosphereTab->pnlUnitAmbientColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("unitsuncolor") || name == wxT("unitsuncolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdAtmosphereTab->colUnitSun->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdAtmosphereTab->pnlUnitSunColourDisplay->SetBackgroundColour(*smdTab->smdAtmosphereTab->colUnitSun);
+                        smdTab->smdAtmosphereTab->pnlUnitSunColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("unitshadowdensity"))
+                        smdTab->smdAtmosphereTab->tcUnitShadowDensity->SetValue(value);
+                    else if(name == wxT("waterbasecolor") || name == wxT("waterbasecolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdWaterTab->colWaterBase->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdWaterTab->pnlWaterBaseColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterBase);
+                        smdTab->smdWaterTab->pnlWaterBaseColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("watermincolor") || name == wxT("watermincolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdWaterTab->colWaterMin->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdWaterTab->pnlWaterMinColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterMin);
+                        smdTab->smdWaterTab->pnlWaterMinColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("waterabsorbcolor") || name == wxT("waterabsorbcolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdWaterTab->colWaterAbsorb->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdWaterTab->pnlWaterAbsorbColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterAbsorb);
+                        smdTab->smdWaterTab->pnlWaterAbsorbColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("sundir"))
+                    {
+    //                    int subLength;
+    //
+    //                    subLength = value.Find(wxT(" "));
+    //                    smdTab->smdAtmosphereTab->tcSunDirX->SetValue( value.Mid( 0, subLength));
+    //                    value = value.Mid( subLength+1, value.Length());
+    //
+    //                    subLength = value.Find(wxT(" "));
+    //                    smdTab->smdAtmosphereTab->tcSunDirY->SetValue( value.Mid(0, subLength));
+    //                    value = value.Mid( subLength+1, value.Length());
+    //
+    //                    smdTab->smdAtmosphereTab->tcSunDirZ->SetValue( value );
+                    }
+                    else if(name == wxT("startposx"))
+                    {
+                        switch(startPosID)
+                        {
+                            case 0:
+                                smdTab->smdGeneralTab->tcTeam1X->SetValue(value);
+                                break;
+                            case 1:
+                                smdTab->smdGeneralTab->tcTeam2X->SetValue(value);
+                                break;
+                            case 2:
+                                smdTab->smdGeneralTab->tcTeam3X->SetValue(value);
+                                break;
+                            case 3:
+                                smdTab->smdGeneralTab->tcTeam4X->SetValue(value);
+                                break;
+                            case 4:
+                                smdTab->smdGeneralTab->tcTeam5X->SetValue(value);
+                                break;
+                            case 5:
+                                smdTab->smdGeneralTab->tcTeam6X->SetValue(value);
+                                break;
+                            case 6:
+                                smdTab->smdGeneralTab->tcTeam7X->SetValue(value);
+                                break;
+                            case 7:
+                                smdTab->smdGeneralTab->tcTeam8X->SetValue(value);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else if(name == wxT("startposz"))
+                    {
+                        switch(startPosID)
+                        {
+                            case 0:
+                                smdTab->smdGeneralTab->tcTeam1Y->SetValue(value);
+                                break;
+                            case 1:
+                                smdTab->smdGeneralTab->tcTeam2Y->SetValue(value);
+                                break;
+                            case 2:
+                                smdTab->smdGeneralTab->tcTeam3Y->SetValue(value);
+                                break;
+                            case 3:
+                                smdTab->smdGeneralTab->tcTeam4Y->SetValue(value);
+                                break;
+                            case 4:
+                                smdTab->smdGeneralTab->tcTeam5Y->SetValue(value);
+                                break;
+                            case 5:
+                                smdTab->smdGeneralTab->tcTeam6Y->SetValue(value);
+                                break;
+                            case 6:
+                                smdTab->smdGeneralTab->tcTeam7Y->SetValue(value);
+                                break;
+                            case 7:
+                                smdTab->smdGeneralTab->tcTeam8Y->SetValue(value);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        file->Close();
+    }
+    delete loadSMDDialog;
+    //bSaved = true;
 }
 
 void Frontend::OnClickResetSMD(wxCommandEvent& event){
@@ -832,3 +793,49 @@ void Frontend::OnClickSaveSMD(wxCommandEvent& event)
     file.Close();
 }
 
+
+void Frontend::LoadImage(int type){
+    int scale;
+    image = new wxImage;
+
+    path.MakeLower();
+    if(path.find(wxT(".bmp"), 0)!=wxNOT_FOUND){
+        image->LoadFile(path, wxBITMAP_TYPE_BMP, -1);
+    }
+    else if(path.find(wxT(".jpg"), 0)!=wxNOT_FOUND || path.find(wxT(".jpeg"), 0)!=wxNOT_FOUND){
+        image->LoadFile(path, wxBITMAP_TYPE_JPEG, -1);
+    }
+    else if(path.find(wxT(".png"), 0)!=wxNOT_FOUND){
+        image->LoadFile(path, wxBITMAP_TYPE_PNG, -1);
+    }
+    else if(path.find(wxT(".tga"), 0)!=wxNOT_FOUND){
+        image->LoadFile(path, wxBITMAP_TYPE_TGA, -1);
+    }
+    else{
+        //error not a supported file type
+    }
+
+    int width = image->GetWidth();
+    int height = image->GetHeight();
+
+    if(width > height){
+        scale=width/height;
+        image->Rescale(440, 440/scale, wxIMAGE_QUALITY_HIGH);
+    }
+    else if(height > width){
+        scale=height/width;
+        image->Rescale(440/scale, 440, wxIMAGE_QUALITY_HIGH);
+    }
+    else{
+        image->Rescale(440, 440, wxIMAGE_QUALITY_HIGH);
+        scale=1;
+    }
+
+    previewTab->LoadPreviewImage(type, image);
+//    if(type == ID_TEXTURE){
+//        image->Rescale(128, 128, wxIMAGE_QUALITY_HIGH);
+//        sbmPreview->SetBitmap(wxBitmap(*image, -1));
+//    }
+
+    delete image;
+}

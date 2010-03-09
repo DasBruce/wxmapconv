@@ -198,6 +198,7 @@ void _smdAtmosphereTab::reset(void)
     pnlGroundSunColourDisplay->Refresh();
     pnlUnitAmbientColourDisplay->Refresh();
     pnlUnitSunColourDisplay->Refresh();
+
 }
 //private
 void _smdAtmosphereTab::OnClickSunColour(wxCommandEvent& event)

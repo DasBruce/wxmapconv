@@ -8,6 +8,10 @@ class _smdWaterTab : public wxPanel{
         wxColour *colWaterMin;
         wxColour *colWaterAbsorb;
 
+        wxPanel *pnlWaterBaseColourDisplay;
+        wxPanel *pnlWaterMinColourDisplay;
+        wxPanel *pnlWaterAbsorbColourDisplay;
+
         _smdWaterTab(wxWindow* parent, wxWindowID id);
         void reset(void);
     private:
@@ -15,13 +19,9 @@ class _smdWaterTab : public wxPanel{
         wxColourData *colourData;
         wxColour *tempColour;
 
-
         wxButton *btnWaterBase;
-        wxPanel *pnlWaterBaseColourDisplay;
         wxButton *btnWaterMin;
-        wxPanel *pnlWaterMinColourDisplay;
         wxButton *btnWaterAbsorb;
-        wxPanel *pnlWaterAbsorbColourDisplay;
 
         void OnClickWaterBaseColour(wxCommandEvent& event);
         void OnClickWaterMinColour(wxCommandEvent& event);

@@ -21,6 +21,17 @@ class _smdAtmosphereTab : public wxPanel{
         wxTextCtrl *tcGroundShadowDensity;
         wxTextCtrl *tcUnitShadowDensity;
 
+        wxPanel *pnlSunColourDisplay;
+        wxPanel *pnlSkyColourDisplay;
+        wxPanel *pnlCloudColourDisplay;
+        wxPanel *pnlFogColourDisplay;
+        wxPanel *pnlSunDirection;
+
+        wxPanel *pnlGroundAmbientColourDisplay;
+        wxPanel *pnlGroundSunColourDisplay;
+        wxPanel *pnlUnitAmbientColourDisplay;
+        wxPanel *pnlUnitSunColourDisplay;
+
         void reset(void);
     private:
         wxColourDialog *cldColour;
@@ -31,22 +42,11 @@ class _smdAtmosphereTab : public wxPanel{
         wxButton *btnSkyColour;
         wxButton *btnCloudColour;
         wxButton *btnFogColour;
-        wxPanel *pnlSunColourDisplay;
-        wxPanel *pnlSkyColourDisplay;
-        wxPanel *pnlCloudColourDisplay;
-        wxPanel *pnlFogColourDisplay;
 
         wxButton *btnGroundAmbientColour;
         wxButton *btnGroundSunColour;
         wxButton *btnUnitAmbientColour;
         wxButton *btnUnitSunColour;
-        wxPanel *pnlGroundAmbientColourDisplay;
-        wxPanel *pnlGroundSunColourDisplay;
-        wxPanel *pnlUnitAmbientColourDisplay;
-        wxPanel *pnlUnitSunColourDisplay;
-
-
-        wxPanel *pnlSunDirection;
 
         void OnClickSunColour(wxCommandEvent& event);
         void OnClickSkyColour(wxCommandEvent& event);
@@ -63,5 +63,3 @@ class _smdAtmosphereTab : public wxPanel{
         void OnChangeUnitShadowDensityText(wxCommandEvent& event);
 };
 #endif
-
-

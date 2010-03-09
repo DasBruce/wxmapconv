@@ -31,7 +31,6 @@ class Frontend : public wxFrame{
         void setDefaultsMapconv(void);
 
         void SaveProject(void);
-        void OpenSMD(void);
 
         void LoadImage(int type);
 
@@ -43,7 +42,7 @@ class Frontend : public wxFrame{
         void OnClickResetSMD(wxCommandEvent& event);
 		void OnTabSwitch(wxCommandEvent& event);
         void OnClickSaveSMD(wxCommandEvent& event);
-        void OnMouseEvent(wxCommandEvent& event);
+        void OnClickOpenSMD(wxCommandEvent& event);
 };
 
 #endif //#ifndef FRONENT_HH_INCLUDED
