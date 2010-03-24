@@ -31,6 +31,8 @@
 #define IDBTN_WATERBASE_COLOUR    2019
 #define IDBTN_WATERMIN_COLOUR     2020
 #define IDBTN_WATERABSORB_COLOUR  2021
+#define IDBTN_WATERPLANE_COLOUR  2022
+#define IDBTN_WATERSURFACE_COLOUR  2023
 
 #define ID_HEIGHT      0
 #define ID_TEXTURE     1
@@ -48,6 +50,7 @@
 #define IDCB_TYPEMAP_ENABLE 4004
 #define IDCB_GEO_ENABLE 4005
 #define IDCB_OTHER_ENABLE 4006
+#define IDCB_WATER_OVERLAY 4007
 
 #define IDI_MAX         5001
 #define IDI_MIN         5002
@@ -104,6 +107,7 @@
 #include <wx/textfile.h>
 #include <wx/colordlg.h>
 #include <wx/cmndata.h>
+#include <wx/glcanvas.h>
 
 #include "images/placeholderbig.png.h"
 #include "images/placeholder.png.h"

@@ -39,6 +39,7 @@ Frontend::Frontend(const wxString& title)
 	notebook->AddPage(mapconvTab, _T("MapConv"), true);
 	notebook->AddPage(previewTab, _("Preview"), true);
     notebook->AddPage(smdTab, wxT("SMD"), true);
+    notebook->SetSelection(0);
 
 //Menu Options//
     Connect(IDMENU_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickNew));
@@ -54,7 +55,21 @@ Frontend::Frontend(const wxString& title)
 
     Connect(IDBTN_SMD_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnClickSaveSMD));
 
+//Propagated messages//
+    Connect(IDBTN_HEIGHT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenHeight));
+    Connect(IDBTN_TEXTURE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenTexture));
+    Connect(IDBTN_METAL, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenMetal));
+    Connect(IDBTN_FEATURE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenFeature));
+    Connect(IDBTN_TYPE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenType));
+
     Centre();
+}
+
+void Frontend::OnChangeMax(wxCommandEvent& event){
+    mapconvTab->calculateWaterHeight();
+}
+void Frontend::OnChangeMin(wxCommandEvent& event){
+    mapconvTab->calculateWaterHeight();
 }
 
 void Frontend::OnClickNew(wxCommandEvent& event){
@@ -71,7 +86,6 @@ void Frontend::OnClickNew(wxCommandEvent& event){
     }
     delete newfiledialog;
 }
-
 
 void Frontend::OnClickSaveProject(wxCommandEvent& event){
     if(!bSaved){
@@ -97,9 +111,7 @@ void Frontend::OnClickSaveProjectAs(wxCommandEvent& event){
     delete SaveFileDialog;
 }
 
-
-void Frontend::SaveProject(void)
-{
+void Frontend::SaveProject(void){
     wxFile file;
 
     file.Open(projectPath, wxFile::write);
@@ -150,8 +162,7 @@ void Frontend::SaveProject(void)
     bSaved = true;
 }
 
-void Frontend::OnClickLoadProject(wxCommandEvent& event)
-{
+void Frontend::OnClickLoadProject(wxCommandEvent& event){
     wxTextFile *file;
 
     wxString str;
@@ -283,8 +294,7 @@ void Frontend::OnClickCompile(wxCommandEvent& event){
     mapconvTab->Compile();
 }
 
-void Frontend::OnClickOpenSMD(wxCommandEvent& event)
-{
+void Frontend::OnClickOpenSMD(wxCommandEvent& event){
     wxString str;
     wxString name;
     wxString value;
@@ -567,6 +577,42 @@ void Frontend::OnClickOpenSMD(wxCommandEvent& event)
                         smdTab->smdWaterTab->pnlWaterAbsorbColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterAbsorb);
                         smdTab->smdWaterTab->pnlWaterAbsorbColourDisplay->Refresh();
                     }
+                    else if(name == wxT("watersurfacecolor") || name == wxT("watersurfacecolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdWaterTab->colWaterSurface->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdWaterTab->pnlWaterSurfaceColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterSurface);
+                        smdTab->smdWaterTab->pnlWaterSurfaceColourDisplay->Refresh();
+                    }
+                    else if(name == wxT("waterplanecolor") || name == wxT("waterplanecolour"))
+                    {
+                        int subLength;
+                        float red, green, blue;
+
+                        subLength = value.Find(wxT(" "));
+                        red = wxAtof( value.Mid( 0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        subLength = value.Find(wxT(" "));
+                        green = wxAtof( value.Mid(0, subLength));
+                        value = value.Mid( subLength+1, value.Length());
+
+                        blue = wxAtof( value );
+                        smdTab->smdWaterTab->colWaterPlane->Set((unsigned char)(red*255), (unsigned char)(green*255), (unsigned char)(blue*255));
+                        smdTab->smdWaterTab->pnlWaterPlaneColourDisplay->SetBackgroundColour(*smdTab->smdWaterTab->colWaterPlane);
+                        smdTab->smdWaterTab->pnlWaterPlaneColourDisplay->Refresh();
+                    }
                     else if(name == wxT("sundir"))
                     {
     //                    int subLength;
@@ -657,8 +703,8 @@ void Frontend::OnClickOpenSMD(wxCommandEvent& event)
 void Frontend::OnClickResetSMD(wxCommandEvent& event){
     smdTab->reset();
 }
-void Frontend::OnClickSaveSMD(wxCommandEvent& event)
-{
+
+void Frontend::OnClickSaveSMD(wxCommandEvent& event){
     wxString sBuffer;
     wxFile file;
     int iTeamCount;
@@ -699,6 +745,12 @@ void Frontend::OnClickSaveSMD(wxCommandEvent& event)
     wxString sWaterAbsorbRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Red()/255);
     wxString sWaterAbsorbGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Green()/255);
     wxString sWaterAbsorbBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterAbsorb->Blue()/255);
+    wxString sWaterPlaneRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterPlane->Red()/255);
+    wxString sWaterPlaneGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterPlane->Green()/255);
+    wxString sWaterPlaneBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterPlane->Blue()/255);
+    wxString sWaterSurfaceRed = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterSurface->Red()/255);
+    wxString sWaterSurfaceGreen = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterSurface->Green()/255);
+    wxString sWaterSurfaceBlue = wxString::Format(wxT("%f"), (float)smdTab->smdWaterTab->colWaterSurface->Blue()/255);
 
     sFogRed.Truncate(5);
     sFogGreen.Truncate(5);
@@ -735,6 +787,12 @@ void Frontend::OnClickSaveSMD(wxCommandEvent& event)
     sWaterAbsorbRed.Truncate(6);
     sWaterAbsorbGreen.Truncate(6);
     sWaterAbsorbBlue.Truncate(6);
+    sWaterPlaneRed.Truncate(6);
+    sWaterPlaneGreen.Truncate(6);
+    sWaterPlaneBlue.Truncate(6);
+    sWaterSurfaceRed.Truncate(6);
+    sWaterSurfaceGreen.Truncate(6);
+    sWaterSurfaceBlue.Truncate(6);
 
     file.Open(wxT("map.smd"), wxFile::write);
     file.Write(wxT("[MAP]\n{\n"));
@@ -769,6 +827,8 @@ void Frontend::OnClickSaveSMD(wxCommandEvent& event)
             file.Write(wxT("\t\tWaterBaseColour=") + sWaterBaseRed + wxT(" ") + sWaterBaseGreen + wxT(" ") + sWaterBaseBlue + wxT(";\n"));
             file.Write(wxT("\t\tWaterMinColour=") + sWaterMinRed + wxT(" ") + sWaterMinGreen + wxT(" ") + sWaterMinBlue + wxT(";\n"));
             file.Write(wxT("\t\tWaterAbsorbColour=") + sWaterAbsorbRed + wxT(" ") + sWaterAbsorbGreen + wxT(" ") + sWaterAbsorbBlue + wxT(";\n"));
+            file.Write(wxT("\t\tWaterPlaneColour=") + sWaterPlaneRed + wxT(" ") + sWaterPlaneGreen + wxT(" ") + sWaterPlaneBlue + wxT(";\n"));
+            file.Write(wxT("\t\tWaterSurfaceColour=") + sWaterSurfaceRed + wxT(" ") + sWaterSurfaceGreen + wxT(" ") + sWaterSurfaceBlue + wxT(";\n"));
         file.Write(wxT("\t}\n"));
         iTeamCount = wxAtoi(smdTab->smdGeneralTab->tcTeamCount->GetValue());
         switch(iTeamCount){
@@ -792,7 +852,6 @@ void Frontend::OnClickSaveSMD(wxCommandEvent& event)
 
     file.Close();
 }
-
 
 void Frontend::LoadImage(int type){
     int scale;
@@ -832,10 +891,66 @@ void Frontend::LoadImage(int type){
     }
 
     previewTab->LoadPreviewImage(type, image);
-//    if(type == ID_TEXTURE){
-//        image->Rescale(128, 128, wxIMAGE_QUALITY_HIGH);
-//        sbmPreview->SetBitmap(wxBitmap(*image, -1));
-//    }
+    if(type == ID_TEXTURE){
+        image->Rescale(128, 128, wxIMAGE_QUALITY_HIGH);
+        mapconvTab->sbmPreview->SetBitmap(wxBitmap(*image, -1));
+    }
 
     delete image;
+}
+
+void Frontend::OnOpenHeight(wxCommandEvent& event){
+    openFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        path = openFileDialog->GetPath();
+        mapconvTab->tcHeight->SetValue(path);
+        LoadImage(ID_HEIGHT);
+        mapconvTab->bHeightmapLoaded = true;
+    }
+}
+
+void Frontend::OnOpenTexture(wxCommandEvent& event){
+    openFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        path = openFileDialog->GetPath();
+        mapconvTab->tcTexture->SetValue(path);
+        LoadImage(ID_TEXTURE);
+        mapconvTab->bTextureLoaded = true;
+    }
+
+}
+
+void Frontend::OnOpenMetal(wxCommandEvent& event){
+    openFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        path = openFileDialog->GetPath();
+        mapconvTab->tcMetal->SetValue(path);
+        LoadImage(ID_METAL);
+        mapconvTab->bMetalLoaded = true;
+    }
+}
+
+void Frontend::OnOpenFeature(wxCommandEvent& event){
+    openFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        path = openFileDialog->GetPath();
+        mapconvTab->tcFeature->SetValue(path);
+        LoadImage(ID_FEATURE);
+        mapconvTab->bFeatureLoaded = true;
+    }
+}
+
+void Frontend::OnOpenType(wxCommandEvent& event){
+    openFileDialog = new wxFileDialog(this);
+    if (openFileDialog->ShowModal() == wxID_OK)
+    {
+        path = openFileDialog->GetPath();
+        mapconvTab->tcType->SetValue(path);
+        LoadImage(ID_TYPE);
+        mapconvTab->bTypemapLoaded = true;
+    }
 }

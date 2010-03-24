@@ -24,15 +24,15 @@ class Frontend : public wxFrame{
         _previewTab *previewTab;
         _mapconvTab *mapconvTab;
         _smdTab *smdTab;
-        //preveiew panel//////////////////////////////////////////////////////////////
+
+        wxFileDialog *openFileDialog;
 
         wxImage *image;
 
         void setDefaultsMapconv(void);
-
         void SaveProject(void);
-
         void LoadImage(int type);
+        void calculateWaterHeight(void);
 
         void OnClickNew(wxCommandEvent& event);
         void OnClickLoadProject(wxCommandEvent& event);
@@ -43,6 +43,16 @@ class Frontend : public wxFrame{
 		void OnTabSwitch(wxCommandEvent& event);
         void OnClickSaveSMD(wxCommandEvent& event);
         void OnClickOpenSMD(wxCommandEvent& event);
+
+        void OnChangeMax(wxCommandEvent& event);
+        void OnChangeMin(wxCommandEvent& event);
+
+        void OnOpenHeight(wxCommandEvent& event);
+        void OnOpenTexture(wxCommandEvent& event);
+        void OnOpenMetal(wxCommandEvent& event);
+        void OnOpenFeature(wxCommandEvent& event);
+        void OnOpenType(wxCommandEvent& event);
+        void OnOpenGeovent(wxCommandEvent& event);
 };
 
 #endif //#ifndef FRONENT_HH_INCLUDED

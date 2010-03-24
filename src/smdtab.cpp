@@ -16,6 +16,7 @@ _smdTab::_smdTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id){
 
     this->SetSizer( box );
     this->Layout();
+    nbSMD->SetSelection(0);
 }
 
 void _smdTab::reset(void){

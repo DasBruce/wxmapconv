@@ -30,11 +30,17 @@ class _mapconvTab : public wxPanel{
 
         wxRadioBox *rbxQuality;
 
+        wxStaticBitmap *sbmPreview;
+
         bool bTextureLoaded;
         bool bHeightmapLoaded;
         bool bMetalLoaded;
         bool bFeatureLoaded;
         bool bTypemapLoaded;
+
+        int iWaterHeight;
+
+        void calculateWaterHeight(void);
 
     private:
         bool bLowpass;
@@ -63,9 +69,6 @@ class _mapconvTab : public wxPanel{
         wxStaticText *stCompression;
         wxStaticText *stFeatureRotate;
 
-        wxStaticBitmap *sbmPreview;
-
-
         void reset(void);
 
         void OnOpenHeight(wxCommandEvent& event);
@@ -77,12 +80,14 @@ class _mapconvTab : public wxPanel{
         void OnOpenGeovent(wxCommandEvent& event);
         void OnOpenOutput(wxCommandEvent& event);
 
+        void OnChangeMax(wxCommandEvent& event);
+        void OnChangeMin(wxCommandEvent& event);
+
         void OnToggleLowpass(wxCommandEvent& event);
         void OnToggleInvert(wxCommandEvent& event);
         void OnToggleFeatureEnable(wxCommandEvent& event);
         void OnToggleTypemapEnable(wxCommandEvent& event);
         void OnToggleOtherEnable(wxCommandEvent& event);
-
 };
 #endif
 

@@ -143,11 +143,12 @@ _smdAtmosphereTab::_smdAtmosphereTab(wxWindow* parent, wxWindowID id) : wxPanel(
 ////////////////////////////////////////////////////////////////////////////////////////////////////
     wxStaticBoxSizer *gsSunDirection = new wxStaticBoxSizer(wxVERTICAL, this, wxT("SunDirection"));
     wxFlexGridSizer *fgSunDirection = new wxFlexGridSizer(1,1,5,5);
+//
+//    pnlSunDirection = new wxPanel(this, -1);
+//    pnlSunDirection->SetBackgroundColour(wxColour(255,0,0));
+    wxStaticText *stSorryText = new wxStaticText(this, wxID_ANY, wxT("Not implemented yet soz"));
 
-    pnlSunDirection = new wxPanel(this, -1);
-    pnlSunDirection->SetBackgroundColour(wxColour(255,0,0));
-
-    fgSunDirection->Add(pnlSunDirection, 1, wxEXPAND, 0);
+    fgSunDirection->Add(stSorryText, 1, wxEXPAND, 0);
     gsSunDirection->Add(fgSunDirection, 1, wxEXPAND, 0);
     hboxSunDirection->Add(gsSunDirection, 1, wxEXPAND, 0);
 

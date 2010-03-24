@@ -4,33 +4,39 @@ _previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 {
 
     wxBoxSizer *hboxPreview = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticBoxSizer *gboxPreviewBig = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Preview"));
+        wxStaticBoxSizer *gboxPreviewBig = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Preview"));
 
-	bmHeightmap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
-	bmTexture = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
-	bmMetal = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
-	bmFeature = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
-	bmTypemap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+        bmHeightmap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+        bmTexture = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+        bmMetal = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+        bmFeature = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
+        bmTypemap = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
 
-    wxPanel *pnlPreviewBig = new wxPanel(this, -1);
-    wxBoxSizer *hboxPreviewBig = new wxBoxSizer(wxHORIZONTAL);
-	sbmPreviewBig = new wxStaticBitmap(pnlPreviewBig, wxID_ANY, charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ), wxPoint(10, 10));
+        wxPanel *pnlPreviewBig = new wxPanel(this, -1);
+        wxBoxSizer *vboxPreviewBig = new wxBoxSizer(wxVERTICAL);
+        sbmPreviewBig = new wxStaticBitmap(pnlPreviewBig, wxID_ANY, charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ), wxPoint(10, 10));
 
-    hboxPreviewBig->Add(sbmPreviewBig, 1, wxEXPAND, 5);
-    pnlPreviewBig->SetSizer(hboxPreviewBig);
-    gboxPreviewBig->Add(pnlPreviewBig, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM | wxTOP, 5);
-    sbmPreviewBig->CentreOnParent();
+        vboxPreviewBig->Add(sbmPreviewBig, 1, wxEXPAND, 5);
+        pnlPreviewBig->SetSizer(vboxPreviewBig);
+        gboxPreviewBig->Add(pnlPreviewBig, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM | wxTOP, 5);
+        sbmPreviewBig->CentreOnParent();
 
-        wxArrayString *asPreview = new wxArrayString();
-        asPreview->Add(wxT("Heightmap"), 1);
-        asPreview->Add(wxT("Texture"), 1);
-        asPreview->Add(wxT("Metal"), 1);
-        asPreview->Add(wxT("Feature"), 1);
-        asPreview->Add(wxT("Type"), 1);
-    rbxPreview = new wxRadioBox(this, IDRBX_PREVIEW, wxT("Select File for Preview"), wxDefaultPosition, wxDefaultSize, *asPreview, 0, wxRA_SPECIFY_ROWS, wxDefaultValidator, wxT("radioBox"));
+        wxBoxSizer *vboxOptions = new wxBoxSizer(wxVERTICAL);
+                wxArrayString *asPreview = new wxArrayString();
+                asPreview->Add(wxT("Heightmap"), 1);
+                asPreview->Add(wxT("Texture"), 1);
+                asPreview->Add(wxT("Metal"), 1);
+                asPreview->Add(wxT("Feature"), 1);
+                asPreview->Add(wxT("Type"), 1);
+            rbxPreview = new wxRadioBox(this, IDRBX_PREVIEW, wxT("Select File for Preview"), wxDefaultPosition, wxDefaultSize, *asPreview, 0, wxRA_SPECIFY_ROWS, wxDefaultValidator, wxT("radioBox"));
+            cbOverlayWater = new wxCheckBox(this, IDCB_WATER_OVERLAY, wxT("Show Water Coverage"));
+            cbOverlayWater->Enable(false);
+            vboxOptions->Add(rbxPreview, 0, wxEXPAND, 5);
+            vboxOptions->Add(cbOverlayWater, 0, wxEXPAND, 5);
+
 
     hboxPreview->Add(gboxPreviewBig, 1, wxEXPAND, 5);
-    hboxPreview->Add(rbxPreview, 0, wxEXPAND, 5);
+    hboxPreview->Add(vboxOptions, 0, wxEXPAND, 5);
     this->SetSizer(hboxPreview);
 
     Connect(IDRBX_PREVIEW, wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler(_previewTab::OnChangePreview));
@@ -72,6 +78,7 @@ bool _previewTab::LoadPreviewImage(int type, wxImage *image)
 			if(bmHeightmap.Ok()){
                 success = true;
                 rbxPreview->Enable(ID_HEIGHT, true);
+                cbOverlayWater->Enable(true);
             }
             if(rbxPreview->GetSelection()==ID_HEIGHT)
 				sbmPreviewBig->SetBitmap(bmHeightmap);

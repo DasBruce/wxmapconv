@@ -15,7 +15,6 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     bFeatureLoaded = false;
     bTypemapLoaded = false;
 
-
     wxBoxSizer *hboxMain = new wxBoxSizer(wxHORIZONTAL);
 
 //Vertical box for the files////////////////////////////////////////////////////////////////////////
@@ -76,9 +75,9 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     wxStaticBoxSizer *gboxPreview = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Preview"));
 
     wxFlexGridSizer *fgHeightOptions = new wxFlexGridSizer(4,2,5,5);
-        stMax = new wxStaticText(this, wxID_ANY, wxT("Maximum"));
+        stMax = new wxStaticText(this, IDTC_MIN_HEIGHT, wxT("Maximum"));
         tcMax = new wxTextCtrl(this, wxID_ANY, wxT("250"));
-        stMin = new wxStaticText(this, wxID_ANY, wxT("Minimum"));
+        stMin = new wxStaticText(this, IDTC_MIN_HEIGHT, wxT("Minimum"));
         tcMin = new wxTextCtrl(this, wxID_ANY, wxT("25"));
         cbLowpass = new wxCheckBox(this, IDCB_LOWPASS, wxT("Lowpass"));
         wxPanel *pnlLowpassPadding = new wxPanel(this, wxID_ANY);
@@ -174,6 +173,9 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     this->SetSizer(hboxMain);
 
 
+    calculateWaterHeight();
+
+
 //Enabling checkboxes//
     Connect(IDCB_FEATURE_ENABLE, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(_mapconvTab::OnToggleFeatureEnable));
     Connect(IDCB_TYPEMAP_ENABLE, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(_mapconvTab::OnToggleTypemapEnable));
@@ -190,57 +192,50 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     Connect(IDBTN_TYPE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenType));
     Connect(IDBTN_GEOVENT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenGeovent));
     Connect(IDBTN_OUTPUT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_mapconvTab::OnOpenOutput));
+
+    Connect(IDTC_MAX_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_mapconvTab::OnChangeMax));
+    Connect(IDTC_MIN_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_mapconvTab::OnChangeMin));
 }
 
-void _mapconvTab::OnOpenHeight(wxCommandEvent& event)
-{
-    openFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
-    {
-        path = openFileDialog->GetPath();
-        tcHeight->SetValue(path);
-        //LoadImage(ID_HEIGHT);
-        bHeightmapLoaded = true;
-    }
+void _mapconvTab::calculateWaterHeight(void){
+    long max, min;
+
+    max = wxAtoi(tcMax->GetValue());
+    min = wxAtoi(tcMin->GetValue());
+
+    if(min >= 0)
+        iWaterHeight = -1;
+    else
+        iWaterHeight = (int)((-min)/(max-min)*255);
+
+    tcHeight->SetValue(wxString::Format(wxT("%i"),iWaterHeight));
 }
 
-void _mapconvTab::OnOpenTexture(wxCommandEvent& event)
-{
-    openFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
-    {
-        path = openFileDialog->GetPath();
-        tcTexture->SetValue(path);
-        //LoadImage(ID_TEXTURE);
-        bTextureLoaded = true;
-    }
-
+void _mapconvTab::OnChangeMax(wxCommandEvent& event){
+    event.Skip();
+}
+void _mapconvTab::OnChangeMin(wxCommandEvent& event){
+    event.Skip();
 }
 
-void _mapconvTab::OnOpenMetal(wxCommandEvent& event)
-{
-    openFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
-    {
-        path = openFileDialog->GetPath();
-        tcMetal->SetValue(path);
-        //LoadImage(ID_METAL);
-        bMetalLoaded = true;
-    }
+
+void _mapconvTab::OnOpenHeight(wxCommandEvent& event){
+    event.Skip(true);
 }
-void _mapconvTab::OnOpenFeature(wxCommandEvent& event)
-{
-    openFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
-    {
-        path = openFileDialog->GetPath();
-        tcFeature->SetValue(path);
-        //LoadImage(ID_FEATURE);
-        bFeatureLoaded = true;
-    }
+
+void _mapconvTab::OnOpenTexture(wxCommandEvent& event){
+    event.Skip(true);
 }
-void _mapconvTab::OnOpenFeatureList(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnOpenMetal(wxCommandEvent& event){
+    event.Skip(true);
+}
+
+void _mapconvTab::OnOpenFeature(wxCommandEvent& event){
+    event.Skip(true);
+}
+
+void _mapconvTab::OnOpenFeatureList(wxCommandEvent& event){
     openFileDialog = new wxFileDialog(this);
     if (openFileDialog->ShowModal() == wxID_OK)
     {
@@ -248,19 +243,12 @@ void _mapconvTab::OnOpenFeatureList(wxCommandEvent& event)
         tcFeatureList->SetValue(path);
     }
 }
-void _mapconvTab::OnOpenType(wxCommandEvent& event)
-{
-    openFileDialog = new wxFileDialog(this);
-    if (openFileDialog->ShowModal() == wxID_OK)
-    {
-        path = openFileDialog->GetPath();
-        tcType->SetValue(path);
-        //LoadImage(ID_TYPE);
-        bTypemapLoaded = true;
-    }
+
+void _mapconvTab::OnOpenType(wxCommandEvent& event){
+    event.Skip(true);
 }
-void _mapconvTab::OnOpenGeovent(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnOpenGeovent(wxCommandEvent& event){
     openFileDialog = new wxFileDialog(this);
     if (openFileDialog->ShowModal() == wxID_OK)
     {
@@ -268,8 +256,8 @@ void _mapconvTab::OnOpenGeovent(wxCommandEvent& event)
         tcGeovent->SetValue(path);
     }
 }
-void _mapconvTab::OnOpenOutput(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnOpenOutput(wxCommandEvent& event){
     openFileDialog = new wxFileDialog(this);
     if (openFileDialog->ShowModal() == wxID_OK)
     {
@@ -278,8 +266,7 @@ void _mapconvTab::OnOpenOutput(wxCommandEvent& event)
     }
 }
 
-void _mapconvTab::Compile(void)
-{
+void _mapconvTab::Compile(void){
     wxString command;
     command.append(wxT("MapConv"));
 
@@ -329,16 +316,15 @@ void _mapconvTab::Compile(void)
     system(command.c_str());
 }
 
-void _mapconvTab::OnToggleLowpass(wxCommandEvent& event)
-{
+void _mapconvTab::OnToggleLowpass(wxCommandEvent& event){
     bLowpass=!bLowpass;
 }
-void _mapconvTab::OnToggleInvert(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnToggleInvert(wxCommandEvent& event){
     bInvert=!bInvert;
 }
-void _mapconvTab::OnToggleFeatureEnable(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnToggleFeatureEnable(wxCommandEvent& event){
     if(bFeatureEnable == false)
     {
         btnFeature->Enable(true);
@@ -355,8 +341,8 @@ void _mapconvTab::OnToggleFeatureEnable(wxCommandEvent& event)
     }
     bFeatureEnable = !bFeatureEnable;
 }
-void _mapconvTab::OnToggleTypemapEnable(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnToggleTypemapEnable(wxCommandEvent& event){
     if(bTypemapEnable == false)
     {
         btnType->Enable(true);
@@ -369,8 +355,8 @@ void _mapconvTab::OnToggleTypemapEnable(wxCommandEvent& event)
     }
     bTypemapEnable = !bTypemapEnable;
 }
-void _mapconvTab::OnToggleOtherEnable(wxCommandEvent& event)
-{
+
+void _mapconvTab::OnToggleOtherEnable(wxCommandEvent& event){
     if(bOtherFirstTime == true)
     {
 		tcOtherOptions->SetValue(wxEmptyString);
@@ -389,8 +375,7 @@ void _mapconvTab::OnToggleOtherEnable(wxCommandEvent& event)
     bOtherEnable = !bOtherEnable;
 }
 
-void _mapconvTab::reset(void)
-{
+void _mapconvTab::reset(void){
     bLowpass = true;
     bInvert = true;
 //    bFeatureEnable = false;
@@ -421,8 +406,4 @@ void _mapconvTab::reset(void)
     tcOtherOptions->SetValue(wxT(""));
 
 //	sbmPreviewBig->SetBitmap( charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ) );
-
 }
-//void _mapconvTab::setDefaultsMapconv(void){
-////MapConv Options//
-//}

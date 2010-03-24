@@ -10,6 +10,9 @@ class _previewTab : public wxPanel{
     private:
         wxStaticBitmap *sbmPreviewBig;
         wxRadioBox *rbxPreview;
+
+        wxCheckBox *cbOverlayWater;
+
 		wxBitmap bmHeightmap;
 		wxBitmap bmTexture;
 		wxBitmap bmMetal;
