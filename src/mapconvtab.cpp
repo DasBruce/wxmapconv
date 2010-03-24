@@ -313,7 +313,8 @@ void _mapconvTab::Compile(void){
     {
         command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -Sinc -quality_highest -file\""));
     }
-    system(command.c_str());
+	//better use wxExecute family of functions, lets you capture output and do async ops, etc.
+	system(command.mb_str());
 }
 
 void _mapconvTab::OnToggleLowpass(wxCommandEvent& event){
