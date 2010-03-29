@@ -68,6 +68,9 @@ void _previewTab::OnClickShowWater(wxCommandEvent& event){
     UpdatePreview();
 }
 
+void _previewTab::OnChangePreview(wxCommandEvent& event){
+    UpdatePreview();
+}
 
 bool _previewTab::LoadPreviewImage(int type, wxImage *image){
 
@@ -128,7 +131,7 @@ void _previewTab::GenerateWaterImage(wxImage *imHeight, wxImage *imUnderlay, int
     unsigned char *data = imUnderlay->GetData();
     for(int y=0; y<440; y++){
         for(int x=0; x<1320; x+=3){
-            if(dataHeight[x+y*1320] < 123){//fWaterHeight){
+            if(dataHeight[x+y*1320] < fWaterHeight){///////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 data[x+y*1320] = 0;
                 data[x+y*1320+1] = 0;
                 data[x+y*1320+2] = 255;
@@ -157,47 +160,32 @@ void _previewTab::GenerateWaterImage(wxImage *imHeight, wxImage *imUnderlay, int
 }
 
 void _previewTab::OnClickRecalculateWater(wxCommandEvent& event){
-//    int selection = rbxPreview->GetSelection();
-//    bShowWater = cbOverlayWater->GetValue();
-//
-//    switch(selection){
-//        case ID_HEIGHT:
-//            if(bShowWater)
-//                bmBitmap = new wxBitmap(imHeightmapWater);
-//            else
-//                bmBitmap = new wxBitmap(imHeightmap);
-//            break;
-//        case ID_TEXTURE:
-//            if(bShowWater)
-//                bmBitmap = new wxBitmap(imTexturepWater);
-//            else
-//                bmBitmap = new wxBitmap(imTexture);
-//            break;
-//        case ID_METAL:
-//            if(bShowWater)
-//                bmBitmap = new wxBitmap(imMetalWater);
-//            else
-//                bmBitmap = new wxBitmap(imMetal);
-//            break;
-//        case ID_FEATURE:
-//            if(bShowWater)
-//                bmBitmap = new wxBitmap(imFeatureWater);
-//            else
-//                bmBitmap = new wxBitmap(imFeature);
-//            break;
-//        case ID_TYPE:
-//            if(bShowWater)
-//                bmBitmap = new wxBitmap(imTypemapWater);
-//            else
-//                bmBitmap = new wxBitmap(imTypemap);
-//            break;
-//        default:
-//            break;
-//    }
-}
+    int selection = rbxPreview->GetSelection();
+    bShowWater = cbOverlayWater->GetValue();
 
+    if(bHeightmapLoaded){
+        wxImage imTemp;
+        imTemp = imHeightmap.Copy();
 
-void _previewTab::OnChangePreview(wxCommandEvent& event){
+		GenerateWaterImage(&imHeightmap, &imTemp, ID_HEIGHT);
+
+		if(bTextureLoaded){
+		    imTemp = imTexture.Copy();
+		    GenerateWaterImage(&imHeightmap, &imTemp, ID_TEXTURE);
+		}
+		if(bMetalLoaded){
+		    imTemp = imTexture.Copy();
+		    GenerateWaterImage(&imHeightmap, &imTemp, ID_METAL);
+		}
+		if(bFeatureLoaded){
+		    imTemp = imTexture.Copy();
+		    GenerateWaterImage(&imHeightmap, &imTemp, ID_FEATURE);
+		}
+		if(bTypemapLoaded){
+		    imTemp = imTexture.Copy();
+		    GenerateWaterImage(&imHeightmap, &imTemp, ID_TYPE);
+		}
+    }
     UpdatePreview();
 }
 

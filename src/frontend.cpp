@@ -70,11 +70,11 @@ Frontend::Frontend(const wxString& title)
 
 void Frontend::OnChangeMax(wxCommandEvent& event){
     previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
-    mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
+    //mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
 }
 void Frontend::OnChangeMin(wxCommandEvent& event){
     previewTab->fWaterHeight =  mapconvTab->calculateWaterHeight();
-    mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
+    //mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
 }
 
 void Frontend::OnClickNew(wxCommandEvent& event){

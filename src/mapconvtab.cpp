@@ -199,6 +199,7 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
 
 float _mapconvTab::calculateWaterHeight(void){
     float max, min;
+    float fWaterHeight;
 
     max = wxAtof(tcMax->GetValue());
     min = wxAtof(tcMin->GetValue());

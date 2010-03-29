@@ -38,8 +38,6 @@ class _mapconvTab : public wxPanel{
         bool bFeatureLoaded;
         bool bTypemapLoaded;
 
-        float fWaterHeight;
-
         float calculateWaterHeight(void);
 
     private:
