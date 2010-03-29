@@ -62,14 +62,19 @@ Frontend::Frontend(const wxString& title)
     Connect(IDBTN_FEATURE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenFeature));
     Connect(IDBTN_TYPE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Frontend::OnOpenType));
 
+    Connect(IDTC_MAX_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMax));
+    Connect(IDTC_MIN_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMin));
+
     Centre();
 }
 
 void Frontend::OnChangeMax(wxCommandEvent& event){
-    mapconvTab->calculateWaterHeight();
+    previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
+    mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
 }
 void Frontend::OnChangeMin(wxCommandEvent& event){
-    mapconvTab->calculateWaterHeight();
+    previewTab->fWaterHeight =  mapconvTab->calculateWaterHeight();
+    mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
 }
 
 void Frontend::OnClickNew(wxCommandEvent& event){

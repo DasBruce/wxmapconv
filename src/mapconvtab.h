@@ -38,9 +38,9 @@ class _mapconvTab : public wxPanel{
         bool bFeatureLoaded;
         bool bTypemapLoaded;
 
-        int iWaterHeight;
+        float fWaterHeight;
 
-        void calculateWaterHeight(void);
+        float calculateWaterHeight(void);
 
     private:
         bool bLowpass;

@@ -75,10 +75,10 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     wxStaticBoxSizer *gboxPreview = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Preview"));
 
     wxFlexGridSizer *fgHeightOptions = new wxFlexGridSizer(4,2,5,5);
-        stMax = new wxStaticText(this, IDTC_MIN_HEIGHT, wxT("Maximum"));
-        tcMax = new wxTextCtrl(this, wxID_ANY, wxT("250"));
-        stMin = new wxStaticText(this, IDTC_MIN_HEIGHT, wxT("Minimum"));
-        tcMin = new wxTextCtrl(this, wxID_ANY, wxT("25"));
+        stMax = new wxStaticText(this, wxID_ANY, wxT("Maximum"));
+        tcMax = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT(MAX_HEIGHT));
+        stMin = new wxStaticText(this, wxID_ANY, wxT("Minimum"));
+        tcMin = new wxTextCtrl(this, IDTC_MIN_HEIGHT, wxT(MIN_HEIGHT));
         cbLowpass = new wxCheckBox(this, IDCB_LOWPASS, wxT("Lowpass"));
         wxPanel *pnlLowpassPadding = new wxPanel(this, wxID_ANY);
         cbInvert = new wxCheckBox(this, IDCB_INVERT, wxT("Invert"));
@@ -197,27 +197,30 @@ _mapconvTab::_mapconvTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     Connect(IDTC_MIN_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_mapconvTab::OnChangeMin));
 }
 
-void _mapconvTab::calculateWaterHeight(void){
-    long max, min;
+float _mapconvTab::calculateWaterHeight(void){
+    float max, min;
 
-    max = wxAtoi(tcMax->GetValue());
-    min = wxAtoi(tcMin->GetValue());
+    max = wxAtof(tcMax->GetValue());
+    min = wxAtof(tcMin->GetValue());
 
     if(min >= 0)
-        iWaterHeight = -1;
+        fWaterHeight = NOWATER;
+    else if(max <= 0)
+        fWaterHeight = ALLWATER;
+    else if(max < min)
+        fWaterHeight = INVERTWATER;
     else
-        iWaterHeight = (int)((-min)/(max-min)*255);
+        fWaterHeight = ((-min)/(max-min))*255;
 
-    tcHeight->SetValue(wxString::Format(wxT("%i"),iWaterHeight));
+    return fWaterHeight;
 }
 
 void _mapconvTab::OnChangeMax(wxCommandEvent& event){
-    event.Skip();
+    event.Skip(true);
 }
 void _mapconvTab::OnChangeMin(wxCommandEvent& event){
-    event.Skip();
+    event.Skip(true);
 }
-
 
 void _mapconvTab::OnOpenHeight(wxCommandEvent& event){
     event.Skip(true);

@@ -1,6 +1,19 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
+//errors
+
+#define NOWATER -1
+#define ALLWATER -2
+#define INVERTWATER -3
+
+//defaults
+
+#define MIN_HEIGHT "-123"
+#define MAX_HEIGHT "124"
+
+//ids
+
 #define IDST_HEIGHT      1001
 #define IDST_TEXTURE     1002
 #define IDST_METAL       1003
@@ -33,6 +46,8 @@
 #define IDBTN_WATERABSORB_COLOUR  2021
 #define IDBTN_WATERPLANE_COLOUR  2022
 #define IDBTN_WATERSURFACE_COLOUR  2023
+
+#define IDBTN_RECALCULATEWATER 2101
 
 #define ID_HEIGHT      0
 #define ID_TEXTURE     1
@@ -69,8 +84,8 @@
 #define IDTC_CLOUD_DENSITY 8019
 #define IDTC_FOG_DENSITY 8026
 
-#define IDTC_MAX_HEIGHT 8027
-#define IDTC_MIN_HEIGHT 8028
+#define IDTC_MAX_HEIGHT 8127
+#define IDTC_MIN_HEIGHT 8128
 
 #define IDTC_GROUND_SHADOW_DENSITY 8044
 #define IDTC_UNIT_SHADOW_DENSITY 8056
