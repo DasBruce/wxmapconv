@@ -153,7 +153,7 @@ void _previewTab::GenerateWaterImage(wxImage *imHeight, wxImage *imUnderlay, int
     unsigned char *dataHeight = imHeight->GetData();
     unsigned char *data = imUnderlay->GetData();
     for(int y=0; y<440; y++){
-        for(int x=0; x<1320; x+=3){
+        for(int x=0; x<1320; x+=6){
             if(dataHeight[x+y*1320] < fWaterHeight){///////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 data[x+y*1320] = 0;
                 data[x+y*1320+1] = 0;
