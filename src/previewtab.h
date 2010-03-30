@@ -7,6 +7,8 @@ class _previewTab : public wxPanel{
         _previewTab(wxWindow* parent, wxWindowID id);
         bool LoadPreviewImage(int type, wxImage *image);
         float fWaterHeight;
+        wxTextCtrl *tcHeightMax;
+        wxTextCtrl *tcHeightMin;
 
     private:
         wxStaticBitmap *sbmPreviewBig;
@@ -43,5 +45,7 @@ class _previewTab : public wxPanel{
         void OnChangePreview(wxCommandEvent& event);
         void OnClickRecalculateWater(wxCommandEvent& event);
         void OnClickShowWater(wxCommandEvent& event);
+        void OnChangeMaxPreview(wxCommandEvent& event);
+        void OnChangeMinPreview(wxCommandEvent& event);
 };
 #endif

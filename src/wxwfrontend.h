@@ -46,6 +46,8 @@ class Frontend : public wxFrame{
 
         void OnChangeMax(wxCommandEvent& event);
         void OnChangeMin(wxCommandEvent& event);
+        void OnChangeMaxPreview(wxCommandEvent& event);
+        void OnChangeMinPreview(wxCommandEvent& event);
 
         void OnOpenHeight(wxCommandEvent& event);
         void OnOpenTexture(wxCommandEvent& event);

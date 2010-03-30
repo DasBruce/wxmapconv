@@ -46,28 +46,51 @@ _previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
             rbxPreview = new wxRadioBox(this, IDRBX_PREVIEW, wxT("Select File for Preview"), wxDefaultPosition, wxDefaultSize, *asPreview, 0, wxRA_SPECIFY_ROWS, wxDefaultValidator, wxT("radioBox"));
             wxStaticBoxSizer *gboxWaterOptions = new wxStaticBoxSizer(wxVERTICAL, this, wxT("Water"));
                 cbOverlayWater = new wxCheckBox(this, IDCB_WATER_OVERLAY, wxT("Show Water"));
-                //cbOverlayWater->Enable(false);
+                cbOverlayWater->SetValue(true);
+                wxBoxSizer *hboxHeightMax = new wxBoxSizer(wxHORIZONTAL);
+                    wxStaticText *stHeightMax = new wxStaticText(this, wxID_ANY, wxT("Max"));
+                    tcHeightMax = new wxTextCtrl(this, IDTC_MAX_HEIGHT_PREVIEW, wxT(MAX_HEIGHT));
+                wxBoxSizer *hboxHeightMin = new wxBoxSizer(wxHORIZONTAL);
+                    wxStaticText *stHeightMin = new wxStaticText(this, wxID_ANY, wxT("Min"));
+                    tcHeightMin = new wxTextCtrl(this, IDTC_MIN_HEIGHT_PREVIEW, wxT(MIN_HEIGHT));
+
                 btnRecalculateWater = new wxButton(this, IDBTN_RECALCULATEWATER, wxT("Recalc Water"));
+
+                hboxHeightMax->Add(stHeightMax, wxTOP | wxBOTTOM, wxEXPAND, 5);
+                hboxHeightMax->Add(tcHeightMax, wxTOP | wxBOTTOM, wxEXPAND, 5);
+                hboxHeightMin->Add(stHeightMin, wxTOP | wxBOTTOM, wxEXPAND, 5);
+                hboxHeightMin->Add(tcHeightMin, wxTOP | wxBOTTOM, wxEXPAND, 5);
+
             gboxWaterOptions->Add(cbOverlayWater, wxTOP | wxBOTTOM, wxEXPAND, 5);
+            gboxWaterOptions->Add(hboxHeightMax, wxTOP | wxBOTTOM, wxEXPAND, 5);
+            gboxWaterOptions->Add(hboxHeightMin, wxTOP | wxBOTTOM, wxEXPAND, 5);
             gboxWaterOptions->Add(btnRecalculateWater, wxTOP | wxBOTTOM, wxEXPAND, 5);
+
 
             vboxOptions->Add(rbxPreview, 0, wxEXPAND, 5);
             vboxOptions->Add(gboxWaterOptions, 0, wxEXPAND, 5);
 
 
-    hboxPreview->Add(gboxPreviewBig, 1, wxEXPAND, 5);
-    hboxPreview->Add(vboxOptions, 0, wxEXPAND, 5);
+    hboxPreview->Add(gboxPreviewBig, 4, wxEXPAND, 5);
+    hboxPreview->Add(vboxOptions, 1, wxEXPAND, 5);
     this->SetSizer(hboxPreview);
 
     Connect(IDRBX_PREVIEW, wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler(_previewTab::OnChangePreview));
     Connect(IDBTN_RECALCULATEWATER, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(_previewTab::OnClickRecalculateWater));
     Connect(IDCB_WATER_OVERLAY, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(_previewTab::OnClickShowWater));
+    Connect(IDTC_MAX_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_previewTab::OnChangeMaxPreview));
+    Connect(IDTC_MIN_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_previewTab::OnChangeMinPreview));
 }
 
+void _previewTab::OnChangeMaxPreview(wxCommandEvent& event){
+    event.Skip(true);
+}
+void _previewTab::OnChangeMinPreview(wxCommandEvent& event){
+    event.Skip(true);
+}
 void _previewTab::OnClickShowWater(wxCommandEvent& event){
     UpdatePreview();
 }
-
 void _previewTab::OnChangePreview(wxCommandEvent& event){
     UpdatePreview();
 }

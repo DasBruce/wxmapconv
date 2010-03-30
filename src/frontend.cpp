@@ -41,6 +41,7 @@ Frontend::Frontend(const wxString& title)
     notebook->AddPage(smdTab, wxT("SMD"), true);
     notebook->SetSelection(0);
 
+previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
 //Menu Options//
     Connect(IDMENU_NEW, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickNew));
     Connect(IDMENU_SAVE, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(Frontend::OnClickSaveProject));
@@ -64,17 +65,27 @@ Frontend::Frontend(const wxString& title)
 
     Connect(IDTC_MAX_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMax));
     Connect(IDTC_MIN_HEIGHT, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMin));
+    Connect(IDTC_MAX_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMaxPreview));
+    Connect(IDTC_MIN_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(Frontend::OnChangeMinPreview));
 
     Centre();
 }
 
 void Frontend::OnChangeMax(wxCommandEvent& event){
+    previewTab->tcHeightMax->ChangeValue(mapconvTab->tcMax->GetValue());
     previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
-    //mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
 }
 void Frontend::OnChangeMin(wxCommandEvent& event){
+    previewTab->tcHeightMin->ChangeValue(mapconvTab->tcMin->GetValue());
     previewTab->fWaterHeight =  mapconvTab->calculateWaterHeight();
-    //mapconvTab->tcTexture->SetValue( wxString::Format(wxT("%f"), previewTab->fWaterHeight));
+}
+void Frontend::OnChangeMaxPreview(wxCommandEvent& event){
+    mapconvTab->tcMax->ChangeValue(previewTab->tcHeightMax->GetValue());
+    previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
+}
+void Frontend::OnChangeMinPreview(wxCommandEvent& event){
+    mapconvTab->tcMin->ChangeValue(previewTab->tcHeightMin->GetValue());
+    previewTab->fWaterHeight = mapconvTab->calculateWaterHeight();
 }
 
 void Frontend::OnClickNew(wxCommandEvent& event){
