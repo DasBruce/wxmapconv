@@ -73,6 +73,8 @@
 		<Unit filename="main.h" />
 		<Unit filename="mapconvtab.cpp" />
 		<Unit filename="mapconvtab.h" />
+		<Unit filename="previewpanel.cpp" />
+		<Unit filename="previewpanel.h" />
 		<Unit filename="previewtab.cpp" />
 		<Unit filename="previewtab.h" />
 		<Unit filename="resource.rc">

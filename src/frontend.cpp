@@ -972,5 +972,5 @@ void Frontend::OnOpenType(wxCommandEvent& event){
 }
 
 void Frontend::OnClickPreview(wxMouseEvent& event){
-    ////
+    mapconvTab->tcHeight->SetValue(wxT("poop"));
 }

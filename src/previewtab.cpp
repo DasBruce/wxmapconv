@@ -14,7 +14,7 @@ _previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id){
 
         wxBitmap bmTemp = charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) );
 
-        //imHeightmap = bmTemp.ConvertToImage();
+        imHeightmap = bmTemp.ConvertToImage();
         imTexture = bmTemp.ConvertToImage();
         imMetal = bmTemp.ConvertToImage();
         imFeature = bmTemp.ConvertToImage();
