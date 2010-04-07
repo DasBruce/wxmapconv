@@ -47,5 +47,6 @@ class _previewTab : public wxPanel{
         void OnClickShowWater(wxCommandEvent& event);
         void OnChangeMaxPreview(wxCommandEvent& event);
         void OnChangeMinPreview(wxCommandEvent& event);
+        void OnClickPreview(wxMouseEvent& event);
 };
 #endif

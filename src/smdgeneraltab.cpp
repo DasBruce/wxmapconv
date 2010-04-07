@@ -2,7 +2,7 @@
 
 #define GRAVITY "130"
 #define MAPHARDNESS "100"
-#define MAXMETAL "3.0"
+#define MAXMETAL "1.0"
 #define EXTRACTORRADIUS "50"
 #define TIDALSTRENGTH "20"
 #define MAXWIND "30"

@@ -10,6 +10,8 @@ SET(wxmapconvSrc
 	src/conversion.cpp
 	src/previewtab.cpp
 	src/previewtab.h
+	src/previewpanel.cpp
+	src/previewpanel.h
 	src/mapconvtab.cpp
 	src/mapconvtab.h
 	src/smdatmospheretab.cpp

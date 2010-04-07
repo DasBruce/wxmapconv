@@ -55,6 +55,8 @@ class Frontend : public wxFrame{
         void OnOpenFeature(wxCommandEvent& event);
         void OnOpenType(wxCommandEvent& event);
         void OnOpenGeovent(wxCommandEvent& event);
+
+        void OnClickPreview(wxMouseEvent& event);
 };
 
 #endif //#ifndef FRONENT_HH_INCLUDED

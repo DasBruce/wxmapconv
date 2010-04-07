@@ -288,33 +288,26 @@ void _mapconvTab::Compile(void){
     command.append(wxT(" -m \"") + tcMetal->GetValue() + wxT("\""));      //metalmap
     command.append(wxT(" -g \"") + tcGeovent->GetValue() + wxT("\""));    //geoventmap
 
-    if(bFeatureEnable)
-    {
+    if(bFeatureEnable){
         command.append(wxT(" -f \"") + tcFeature->GetValue() + wxT("\""));
         command.append(wxT(" -j \"") + tcFeatureList->GetValue() + wxT("\""));
     }
-    if(bTypemapEnable)
-    {
+    if(bTypemapEnable){
         command.append(wxT(" -y \"") + tcType->GetValue() + wxT("\""));
     }
-    if(bOtherEnable)
-    {
+    if(bOtherEnable){
         command.append(wxT(" ") + tcOtherOptions->GetValue());
     }
     int iQuality = rbxQuality->GetSelection();
-    if(iQuality == 0)
-    {
+    if(iQuality == 0){
         command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -quick -file\""));
     }
-    else if(iQuality == 1)
-    {
+    else if(iQuality == 1){
         command.append(wxT(" -q "));
     }
-    else if(iQuality == 2)
-    {
+    else if(iQuality == 2){
     }
-    else if(iQuality == 3)
-    {
+    else if(iQuality == 3){
         command.append(wxT(" -z \"nvdxt.exe -dxt1a -nmips 4 -Sinc -quality_highest -file\""));
     }
     system(command.c_str());

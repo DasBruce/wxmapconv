@@ -1,7 +1,6 @@
 #include "previewtab.h"
 
-_previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
-{
+_previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id){
     bShowWater = false;
     bShowWater = false;
     bHeightmapLoaded = false;
@@ -27,7 +26,7 @@ _previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
         imFeatureWater = bmTemp.ConvertToImage();
         imTypemapWater = bmTemp.ConvertToImage();
 
-        wxPanel *pnlPreviewBig = new wxPanel(this, -1);
+        _previewPanel *pnlPreviewBig = new _previewPanel(this, IDPNL_PREVIEW);/////////////////////////////////////////////////
         wxBoxSizer *vboxPreviewBig = new wxBoxSizer(wxVERTICAL);
         sbmPreviewBig = new wxStaticBitmap(pnlPreviewBig, wxID_ANY, charArr2wxBitmap( placeholderbig_png, sizeof( placeholderbig_png ) ), wxPoint(10, 10));
 
@@ -80,6 +79,7 @@ _previewTab::_previewTab(wxWindow* parent, wxWindowID id) : wxPanel(parent, id)
     Connect(IDCB_WATER_OVERLAY, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(_previewTab::OnClickShowWater));
     Connect(IDTC_MAX_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_previewTab::OnChangeMaxPreview));
     Connect(IDTC_MIN_HEIGHT_PREVIEW, wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler(_previewTab::OnChangeMinPreview));
+    Connect(IDPNL_PREVIEW, wxEVT_LEFT_DOWN, wxMouseEventHandler(_previewTab::OnClickPreview));
 }
 
 void _previewTab::OnChangeMaxPreview(wxCommandEvent& event){
@@ -253,4 +253,8 @@ void _previewTab::UpdatePreview(void){
     sbmPreviewBig->SetBitmap(*bmBitmap);
     sbmPreviewBig->CentreOnParent();
     sbmPreviewBig->Refresh();
+}
+
+void _previewTab::OnClickPreview(wxMouseEvent& event){
+    event.Skip(true);
 }

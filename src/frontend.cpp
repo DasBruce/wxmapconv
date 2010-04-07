@@ -970,3 +970,7 @@ void Frontend::OnOpenType(wxCommandEvent& event){
         mapconvTab->bTypemapLoaded = true;
     }
 }
+
+void Frontend::OnClickPreview(wxMouseEvent& event){
+    ////
+}

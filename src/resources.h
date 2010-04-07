@@ -78,6 +78,7 @@
 #define IDRBX_QUALITY    6005
 
 #define IDRBX_PREVIEW    6101
+#define IDPNL_PREVIEW    6102
 
 #define IDNB_MAIN        7001
 
@@ -131,6 +132,7 @@
 
 #include "mapconvtab.h"
 #include "previewtab.h"
+#include "previewpanel.h"
 #include "smdgeneraltab.h"
 #include "smdatmospheretab.h"
 #include "smdwatertab.h"
