@@ -262,7 +262,7 @@ void _mapconvTab::OnOpenGeovent(wxCommandEvent& event){
 }
 
 void _mapconvTab::OnOpenOutput(wxCommandEvent& event){
-    openFileDialog = new wxFileDialog(this);
+    openFileDialog = new wxFileDialog(this, wxT("Choose a file"), wxT(""), wxT(""), wxT("*.*"), wxFD_SAVE);
     if (openFileDialog->ShowModal() == wxID_OK)
     {
         path = openFileDialog->GetPath();

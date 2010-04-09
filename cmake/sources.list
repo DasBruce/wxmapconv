@@ -22,5 +22,7 @@ SET(wxmapconvSrc
 	src/smdwatertab.h
 	src/smdtab.cpp
 	src/smdtab.h
+	src/splattab.cpp
+	src/splattab.h
 	)
 

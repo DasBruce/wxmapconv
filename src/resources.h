@@ -93,6 +93,15 @@
 #define IDTC_GROUND_SHADOW_DENSITY 8044
 #define IDTC_UNIT_SHADOW_DENSITY 8056
 
+#define IDTC_REDCHANNEL 8061
+#define IDTC_GREENCHANNEL 8062
+#define IDTC_BLUECHANNEL 8063
+#define IDTC_OUTPUTSPLAT 8064
+#define IDBTN_REDCHANNEL 8071
+#define IDBTN_GREENCHANNEL 8072
+#define IDBTN_BLUECHANNEL 8073
+#define IDBTN_OUTPUTSPLAT 8074
+
 #define IDMENU_NEW  9001
 #define IDMENU_OPEN 9002
 #define IDMENU_SAVE 9003
@@ -101,6 +110,7 @@
 #define IDMENU_SMDRESET 9020
 #define IDMENU_SMDOPEN 9021
 #define IDMENU_SMDSAVE 9022
+#define IDMENU_SPLATCOMPILE 9023
 
 #define IDTC_TEAM_COUNT 10001
 #define IDBM_PREVIEW_PLACEHOLDER 10002
@@ -137,6 +147,7 @@
 #include "smdatmospheretab.h"
 #include "smdwatertab.h"
 #include "smdtab.h"
+#include "splattab.h"
 
 #include "uiutils.h"
 

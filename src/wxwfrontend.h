@@ -15,8 +15,9 @@ class Frontend : public wxFrame{
 
         wxMenuBar *menubar;
         wxMenu *mnFile;
-        wxMenu *mnSMD;
         wxMenu *mnMapconv;
+        wxMenu *mnSMD;
+        wxMenu *mnSplat;
         wxMenu *mnAbout;
 
         wxNotebook *notebook;
@@ -24,6 +25,7 @@ class Frontend : public wxFrame{
         _previewTab *previewTab;
         _mapconvTab *mapconvTab;
         _smdTab *smdTab;
+        _splatTab *splatTab;
 
         wxFileDialog *openFileDialog;
 
@@ -43,6 +45,7 @@ class Frontend : public wxFrame{
 		void OnTabSwitch(wxCommandEvent& event);
         void OnClickSaveSMD(wxCommandEvent& event);
         void OnClickOpenSMD(wxCommandEvent& event);
+        void OnClickSplatCompile(wxCommandEvent& event);
 
         void OnChangeMax(wxCommandEvent& event);
         void OnChangeMin(wxCommandEvent& event);
